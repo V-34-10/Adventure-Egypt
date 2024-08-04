@@ -12,4 +12,19 @@
     <string name="button_level_easy">Easy</string>
     <string name="button_level_medium">Medium</string>
     <string name="button_level_hard">Hard</string>
+    <string name="button_continue">button continue</string>
+    <string name="text_volume">Volume</string>
+    <string name="text_music">Music</string>
+    <string name="button_music_on">button music on</string>
+    <string name="button_music_off_check">button music off check</string>
+    <string name="text_rules"><n>In the ''Find Pair'' game, your objective is to match identical pairs of</n>
+        <n>cards within a grid of face-down cards.You can flip over two cards at a</n>
+        <n>time to reveal their hidden symbols.If the symbols on the cards match,</n>
+        <n>they remain face-up, and you score points.However, if the symbols do</n>
+        <n>not match, the cards are turned face-down again, and you must</n>
+        <n>remember their positions for future turns.The game continues until all</n>
+        <n>pairs have been successfully matched or until the time runs out,</n>
+        <n>challenging your memory and concentration skills.</n>
+        <n>Best of luck!</n>
+    </string>
 </resources>
