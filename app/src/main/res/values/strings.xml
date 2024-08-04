@@ -2,4 +2,8 @@
     <string name="app_name">Asian Egypt Adventure</string>
     <string name="text_loading">loading</string>
     <string name="sourcebanner">image banner</string>
+    <string name="button_start">button start</string>
+    <string name="button_rules">button rules</string>
+    <string name="button_settings">button settings</string>
+    <string name="button_exit">button exit</string>
 </resources>
