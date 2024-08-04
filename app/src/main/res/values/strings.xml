@@ -27,4 +27,16 @@
         <n>challenging your memory and concentration skills.</n>
         <n>Best of luck!</n>
     </string>
+    <string name="title_level">
+        <n>Level</n>
+        EASY
+    </string>
+    <string name="title_time">Time\n00:12</string>
+    <string name="title_steps">Steps\n17</string>
+    <string name="title_level_medium">Level\nMEDIUM</string>
+    <string name="title_time_medium">Time\n00:36</string>
+    <string name="title_steps_medium">Steps\n19</string>
+    <string name="title_level_hard">Level\nHARD</string>
+    <string name="title_time_hard">Time\n01:10</string>
+    <string name="title_steps_hard">Steps\n12</string>
 </resources>

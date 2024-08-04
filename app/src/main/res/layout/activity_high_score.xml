@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_loading"
+    tools:context=".HighScoreActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/score"
+        android:layout_width="550dp"
+        android:layout_height="350dp"
+        android:background="@drawable/background_high_score_bar"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/score_easy_level"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/title_level"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_level"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title_time"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_time"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title_level"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/title_steps"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_steps"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title_time"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/score_medium_level"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/score_easy_level">
+
+            <TextView
+                android:id="@+id/title_level_medium"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_level_medium"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title_time_medium"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_time_medium"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title_level_medium"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/title_steps_medium"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_steps_medium"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title_time_medium"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/score_hard_level"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/score_medium_level">
+
+            <TextView
+                android:id="@+id/title_level_hard"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_level_hard"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/title_time_hard"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_time_hard"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title_level_hard"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <TextView
+                android:id="@+id/title_steps_hard"
+                android:layout_width="80dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="50dp"
+                android:fontFamily="@font/irish_grover"
+                android:shadowColor="@color/black"
+                android:shadowDx="-3"
+                android:shadowDy="-3"
+                android:shadowRadius="1"
+                android:text="@string/title_steps_hard"
+                android:textAlignment="center"
+                android:textColor="@color/white_light"
+                android:textSize="@dimen/sp18"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/title_time_hard"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
