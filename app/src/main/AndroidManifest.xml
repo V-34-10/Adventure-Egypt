@@ -19,6 +19,14 @@
         android:theme="@style/Theme.AsianEgyptAdventure"
         tools:targetApi="31">
         <activity
+            android:name=".LevelActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ThemeActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".MenuActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
