@@ -6,4 +6,10 @@
     <string name="button_rules">button rules</string>
     <string name="button_settings">button settings</string>
     <string name="button_exit">button exit</string>
+    <string name="button_theme_first">Actec</string>
+    <string name="button_theme_second">Egypt</string>
+    <string name="button_theme_three">Asian</string>
+    <string name="button_level_easy">Easy</string>
+    <string name="button_level_medium">Medium</string>
+    <string name="button_level_hard">Hard</string>
 </resources>
