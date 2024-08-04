@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Asian Egypt Adventure</string>
+    <string name="text_loading">loading</string>
+    <string name="sourcebanner">image banner</string>
 </resources>
