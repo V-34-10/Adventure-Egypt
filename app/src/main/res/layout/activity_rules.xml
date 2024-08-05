@@ -9,7 +9,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/rules"
-        android:layout_width="550dp"
+        android:layout_width="570dp"
         android:layout_height="wrap_content"
         android:background="@drawable/background_rules_bar"
         android:orientation="horizontal"
@@ -22,9 +22,9 @@
             android:id="@+id/text_rules"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="10dp"
             android:layout_marginTop="80dp"
-            android:layout_marginEnd="20dp"
+            android:layout_marginEnd="10dp"
             android:layout_marginBottom="35dp"
             android:fontFamily="@font/irish_grover"
             android:shadowColor="@color/black"
