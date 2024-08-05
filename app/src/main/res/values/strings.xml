@@ -1,22 +1,28 @@
 <resources>
     <string name="app_name">Asian Egypt Adventure</string>
+
     <string name="text_loading">loading</string>
     <string name="sourcebanner">image banner</string>
+
     <string name="button_start">button start</string>
     <string name="button_rules">button rules</string>
     <string name="button_settings">button settings</string>
     <string name="button_exit">button exit</string>
+
     <string name="button_theme_first">Actec</string>
     <string name="button_theme_second">Egypt</string>
     <string name="button_theme_three">Asian</string>
+
     <string name="button_level_easy">Easy</string>
     <string name="button_level_medium">Medium</string>
     <string name="button_level_hard">Hard</string>
+
     <string name="button_continue">button continue</string>
     <string name="text_volume">Volume</string>
     <string name="text_music">Music</string>
     <string name="button_music_on">button music on</string>
     <string name="button_music_off_check">button music off check</string>
+
     <string name="text_rules"><n>In the ''Find Pair'' game, your objective is to match identical pairs of</n>
         <n>cards within a grid of face-down cards.You can flip over two cards at a</n>
         <n>time to reveal their hidden symbols.If the symbols on the cards match,</n>
@@ -27,10 +33,8 @@
         <n>challenging your memory and concentration skills.</n>
         <n>Best of luck!</n>
     </string>
-    <string name="title_level">
-        <n>Level</n>
-        EASY
-    </string>
+
+    <string name="title_level">Level\nEASY</string>
     <string name="title_time">Time\n00:12</string>
     <string name="title_steps">Steps\n17</string>
     <string name="title_level_medium">Level\nMEDIUM</string>
@@ -39,4 +43,9 @@
     <string name="title_level_hard">Level\nHARD</string>
     <string name="title_time_hard">Time\n01:10</string>
     <string name="title_steps_hard">Steps\n12</string>
+
+    <string name="button_score">button score</string>
+    <string name="text_default_balance">2000</string>
+    <string name="default_win">WIN\n10000</string>
+
 </resources>
