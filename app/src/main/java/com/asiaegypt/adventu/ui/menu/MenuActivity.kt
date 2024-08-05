@@ -1,13 +1,11 @@
 package com.asiaegypt.adventu.ui.menu
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.asiaegypt.adventu.R
-import com.asiaegypt.adventu.databinding.ActivityMainBinding
 import com.asiaegypt.adventu.databinding.ActivityMenuBinding
 import com.asiaegypt.adventu.ui.rules.RulesActivity
 import com.asiaegypt.adventu.ui.settings.SettingsActivity
@@ -45,7 +43,8 @@ class MenuActivity : AppCompatActivity() {
         }
     }
 
-    @Deprecated("Deprecated in Java",
+    @Deprecated(
+        "Deprecated in Java",
         ReplaceWith("super.onBackPressed()", "androidx.appcompat.app.AppCompatActivity")
     )
     override fun onBackPressed() {
