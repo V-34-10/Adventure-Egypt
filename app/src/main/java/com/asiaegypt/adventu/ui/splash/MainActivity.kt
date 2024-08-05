@@ -10,6 +10,7 @@ import android.util.DisplayMetrics
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.asiaegypt.adventu.NetworkManager
 import com.asiaegypt.adventu.databinding.ActivityMainBinding
 import com.asiaegypt.adventu.ui.ads.AdsSection
 import com.asiaegypt.adventu.ui.menu.MenuActivity
@@ -30,9 +31,10 @@ class MainActivity : AppCompatActivity() {
     private fun loadingApp() {
         val animationDuration = 3000L
         animationLoading(animationDuration)
+        val isInternetAvailable = NetworkManager.checkInternet(this)
         lifecycleScope.launch {
             delay(animationDuration)
-            if (checkInternet()) {
+            if (isInternetAvailable) {
                 loadAds()
             } else {
                 startActivity(Intent(this@MainActivity, MenuActivity::class.java))
@@ -56,13 +58,6 @@ class MainActivity : AppCompatActivity() {
         animation.start()
     }
 
-    @SuppressLint("ObsoleteSdkInt")
-    private fun checkInternet(): Boolean {
-        val connectivityManager =
-            getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val activeNetworkInfo = connectivityManager.activeNetworkInfo
-        return activeNetworkInfo != null && (activeNetworkInfo.isConnected || activeNetworkInfo.isConnectedOrConnecting)
-    }
 
     private fun loadAds() {
         val preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
