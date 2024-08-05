@@ -88,7 +88,7 @@
             android:id="@+id/score_medium_level"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            app:layout_constraintBottom_toTopOf="@+id/score_hard_level"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.497"
             app:layout_constraintStart_toStartOf="parent"
@@ -155,10 +155,10 @@
             android:id="@+id/score_hard_level"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginBottom="50dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/score_medium_level">
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:id="@+id/title_level_hard"
