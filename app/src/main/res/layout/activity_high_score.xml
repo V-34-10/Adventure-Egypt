@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background_loading"
-    tools:context=".HighScoreActivity">
+    tools:context=".ui.score.HighScoreActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/score"
