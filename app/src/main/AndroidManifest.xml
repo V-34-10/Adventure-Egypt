@@ -19,31 +19,35 @@
         android:theme="@style/Theme.AsianEgyptAdventure"
         tools:targetApi="31">
         <activity
-            android:name=".HighScoreActivity"
+            android:name=".ui.game.SceneActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".RulesActivity"
+            android:name=".ui.score.HighScoreActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.rules.RulesActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".LevelActivity"
+            android:name=".ui.settings.SettingsActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".ThemeActivity"
+            android:name=".ui.levels.LevelActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".MenuActivity"
+            android:name=".ui.themes.ThemeActivity"
             android:exported="false"
             android:screenOrientation="landscape" />
         <activity
-            android:name=".MainActivity"
+            android:name=".ui.menu.MenuActivity"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ui.splash.MainActivity"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
