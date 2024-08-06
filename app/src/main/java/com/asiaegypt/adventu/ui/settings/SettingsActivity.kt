@@ -42,7 +42,7 @@ class SettingsActivity : AppCompatActivity() {
             binding.buttonOn.setBackgroundResource(R.drawable.button_music_on_check)
             binding.buttonOff.setBackgroundResource(R.drawable.button_music_off)
 
-            musicStartMode()
+            MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
         }
         binding.buttonOff.setOnClickListener {
             animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
@@ -56,7 +56,7 @@ class SettingsActivity : AppCompatActivity() {
             binding.buttonOn.setBackgroundResource(R.drawable.button_music_on)
             binding.buttonOff.setBackgroundResource(R.drawable.button_music_off_check)
 
-            musicStartMode()
+            MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
         }
         binding.buttonContinue.setOnClickListener {
             it.startAnimation(animationButton)
@@ -101,11 +101,6 @@ class SettingsActivity : AppCompatActivity() {
                 }
             }
         })
-    }
-
-    private fun musicStartMode() {
-        statusMusic = preferences.getBoolean("music_status", false)
-        if (statusMusic) { managerMusic.apply { play(R.raw.music_menu, true) } }
     }
 
     override fun onDestroy() {

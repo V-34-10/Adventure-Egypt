@@ -1,6 +1,7 @@
 package com.asiaegypt.adventu.ui.settings
 
 import android.content.Context
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import androidx.annotation.RawRes
 import kotlinx.coroutines.CoroutineScope
@@ -68,6 +69,19 @@ class MusicManager(private val context: Context) {
             }
             it.release()
             mediaPlayers.remove(soundResId)
+        }
+    }
+}
+
+object MusicStart {
+    fun musicStartMode(
+        sourceMusic: Int,
+        managerMusic: MusicManager,
+        preferences: SharedPreferences
+    ) {
+        val statusMusic = preferences.getBoolean("music_status", false)
+        if (statusMusic) {
+            managerMusic.apply { play(sourceMusic, true) }
         }
     }
 }

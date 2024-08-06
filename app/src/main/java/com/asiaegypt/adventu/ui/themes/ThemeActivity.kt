@@ -10,6 +10,7 @@ import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityThemeBinding
 import com.asiaegypt.adventu.ui.levels.LevelActivity
 import com.asiaegypt.adventu.ui.settings.MusicManager
+import com.asiaegypt.adventu.ui.settings.MusicStart
 
 class ThemeActivity : AppCompatActivity() {
     private val binding by lazy { ActivityThemeBinding.inflate(layoutInflater) }
@@ -21,7 +22,7 @@ class ThemeActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         managerMusic = MusicManager(this)
         preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
-        musicStartMode()
+        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
         choiceThemeGameButton()
     }
 
@@ -66,13 +67,6 @@ class ThemeActivity : AppCompatActivity() {
     override fun onPause() {
         super.onPause()
         managerMusic.pause()
-    }
-
-    private fun musicStartMode() {
-        val statusMusic = preferences.getBoolean("music_status", false)
-        if (statusMusic) {
-            managerMusic.apply { play(R.raw.music_menu, true) }
-        }
     }
 
     override fun onDestroy() {
