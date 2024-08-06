@@ -15,7 +15,6 @@ class SettingsActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySettingsBinding.inflate(layoutInflater) }
     private val managerAudioService by lazy { getSystemService(Context.AUDIO_SERVICE) as AudioManager }
     private var defaultVolumeMusic: Int = 50
-    private var statusMusic: Boolean = false
     private lateinit var preferences: SharedPreferences
     private lateinit var managerMusic: MusicManager
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,83 +24,62 @@ class SettingsActivity : AppCompatActivity() {
         managerMusic = MusicManager(this)
         preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
         MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
-        initResourceMusicButtonCheck()
-        changeControlVolumeBar()
-        choiceSettingsAppButton()
+
+        initMusicSettings()
+        initVolumeControl()
+        setupButtons()
     }
 
-    private fun choiceSettingsAppButton() {
-        var animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-        statusMusic = preferences.getBoolean("music_status", false)
+    private fun initMusicSettings() {
+        val isMusicOn = preferences.getBoolean("music_status", false)
+        updateMusicButtonState(isMusicOn)
+    }
+
+    private fun initVolumeControl() {
+        val maxVolume = managerAudioService.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+        binding.seekBarVolume.max = maxVolume
+        binding.seekBarVolume.progress = managerAudioService.getStreamVolume(AudioManager.STREAM_MUSIC)
+
+        binding.seekBarVolume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                if (fromUser) {
+                    managerAudioService.setStreamVolume(AudioManager.STREAM_MUSIC, progress, 0)
+                }
+            }
+            override fun onStartTrackingTouch(seekBar: SeekBar) {}
+            override fun onStopTrackingTouch(seekBar: SeekBar) {}
+        })
+    }
+
+    private fun setupButtons() {
+        val animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
+
         binding.buttonOn.setOnClickListener {
             it.startAnimation(animationButton)
-
+            updateMusicButtonState(true)
             managerAudioService.setStreamVolume(AudioManager.STREAM_MUSIC, defaultVolumeMusic, 0)
-
             preferences.edit().putBoolean("music_status", true).apply()
-
-            binding.buttonOn.setBackgroundResource(R.drawable.button_music_on_check)
-            binding.buttonOff.setBackgroundResource(R.drawable.button_music_off)
-
             MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
         }
-        binding.buttonOff.setOnClickListener {
-            animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-            it.startAnimation(animationButton)
 
+        binding.buttonOff.setOnClickListener {
+            it.startAnimation(animationButton)
+            updateMusicButtonState(false)
             defaultVolumeMusic = managerAudioService.getStreamVolume(AudioManager.STREAM_MUSIC)
             managerAudioService.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0)
-
             preferences.edit().putBoolean("music_status", false).apply()
-
-            binding.buttonOn.setBackgroundResource(R.drawable.button_music_on)
-            binding.buttonOff.setBackgroundResource(R.drawable.button_music_off_check)
-
             MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
         }
+
         binding.buttonContinue.setOnClickListener {
             it.startAnimation(animationButton)
             onBackPressed()
         }
     }
 
-    private fun initResourceMusicButtonCheck() {
-        if (preferences.getBoolean("music_status", false)) {
-            binding.buttonOn.setBackgroundResource(R.drawable.button_music_on_check)
-            binding.buttonOff.setBackgroundResource(R.drawable.button_music_off)
-        } else {
-            binding.buttonOn.setBackgroundResource(R.drawable.button_music_on)
-            binding.buttonOff.setBackgroundResource(R.drawable.button_music_off_check)
-        }
-    }
-
-    private fun changeControlVolumeBar() {
-        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        val maxVolume = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
-        binding.seekBarVolume.max = maxVolume
-
-        val currentMusicVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
-        binding.seekBarVolume.progress = currentMusicVolume
-
-        binding.seekBarVolume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            var progressChanged = false
-            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
-                if (fromUser) {
-                    progressChanged = true
-                }
-            }
-
-            override fun onStartTrackingTouch(seekBar: SeekBar) {
-                progressChanged = false
-            }
-
-            override fun onStopTrackingTouch(seekBar: SeekBar) {
-                if (progressChanged) {
-                    val volume = seekBar.progress
-                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volume, 0)
-                }
-            }
-        })
+    private fun updateMusicButtonState(isMusicOn: Boolean) {
+        binding.buttonOn.setBackgroundResource(if (isMusicOn) R.drawable.button_music_on_check else R.drawable.button_music_on)
+        binding.buttonOff.setBackgroundResource(if (isMusicOn) R.drawable.button_music_off else R.drawable.button_music_off_check)
     }
 
     override fun onDestroy() {
