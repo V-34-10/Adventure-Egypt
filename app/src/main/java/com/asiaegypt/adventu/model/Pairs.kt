@@ -1,6 +1,6 @@
 package com.asiaegypt.adventu.model
 
-data class Pair(
+data class Pairs(
     val image: Int,
     var flipped: Boolean = false,
     var matched: Boolean = false,
