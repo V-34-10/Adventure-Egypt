@@ -10,18 +10,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.model.Pairs
 
+class PairViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    val pairImage: ImageView = itemView.findViewById(R.id.pairResImage)
+}
+
 class PairAdapter (
     private val pairList: List<Pairs>,
     private val level: String,
     private val theme: String
 ) :
-    RecyclerView.Adapter<PairAdapter.PairViewHolder>() {
+    RecyclerView.Adapter<PairViewHolder>() {
 
     var onPairClick: ((Pairs, Int) -> Unit)? = null
-
-    class PairViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val pairImage: ImageView = itemView.findViewById(R.id.pairResImage)
-    }
 
     @SuppressLint("MissingInflatedId")
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PairViewHolder {
@@ -31,13 +31,13 @@ class PairAdapter (
 
         val cardSize = when (level) {
             "Medium" -> {
-                55.dpToPx(parent.context)
+                55.dpConvertToPx(parent.context)
             }
             "Hard" -> {
-                40.dpToPx(parent.context)
+                40.dpConvertToPx(parent.context)
             }
             else -> {
-                70.dpToPx(parent.context)
+                70.dpConvertToPx(parent.context)
             }
         }
         cardImage.layoutParams.width = cardSize
@@ -48,34 +48,31 @@ class PairAdapter (
 
     override fun onBindViewHolder(holder: PairViewHolder, position: Int) {
         val pairItem = pairList[position]
-        if (pairItem.flipped) {
-            holder.pairImage.setImageResource(pairItem.image)
-        } else {
-            when (theme) {
-                "Actec" -> {
-                    holder.pairImage.setImageResource(R.drawable.pair_actec_easy_0)
-                }
-
-                "Egypt" -> {
-                    holder.pairImage.setImageResource(R.drawable.pair_egypt_easy_0)
-                }
-
-                "Asian" -> {
-                    holder.pairImage.setImageResource(R.drawable.pair_asian_easy_0)
-                }
+        holder.pairImage.setImageResource(
+            if (pairItem.flipped) {
+                pairItem.image
+            } else {
+                getClosedCardResource(theme)
             }
-        }
+        )
 
         holder.itemView.setOnClickListener {
             onPairClick?.invoke(pairItem, position)
         }
     }
 
-    override fun getItemCount(): Int {
-        return pairList.size
+    private fun getClosedCardResource(theme: String): Int {
+        return when (theme) {
+            "Actec" -> R.drawable.pair_actec_easy_0
+            "Egypt" -> R.drawable.pair_egypt_easy_0
+            "Asian" -> R.drawable.pair_asian_easy_0
+            else -> R.drawable.pair_actec_easy_0
+        }
     }
 
-    private fun Int.dpToPx(context: Context): Int {
+    override fun getItemCount(): Int = pairList.size
+
+    private fun Int.dpConvertToPx(context: Context): Int {
         val density = context.resources.displayMetrics.density
         return (this * density).toInt()
     }
