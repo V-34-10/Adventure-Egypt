@@ -1,19 +1,26 @@
 package com.asiaegypt.adventu.ui.rules
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityRulesBinding
+import com.asiaegypt.adventu.ui.settings.MusicManager
+import com.asiaegypt.adventu.ui.settings.MusicStart
 
 class RulesActivity : AppCompatActivity() {
     private val binding by lazy { ActivityRulesBinding.inflate(layoutInflater) }
+    private lateinit var preferences: SharedPreferences
+    private lateinit var managerMusic: MusicManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
-
+        managerMusic = MusicManager(this)
+        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
+        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
         binding.buttonContinue.setOnClickListener {
             it.startAnimation(AnimationUtils.loadAnimation(this, R.anim.scale_animation))
             onBackPressed()
@@ -26,5 +33,10 @@ class RulesActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         super.onBackPressed()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        managerMusic.release()
     }
 }
