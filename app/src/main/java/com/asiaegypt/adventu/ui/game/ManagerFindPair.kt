@@ -44,6 +44,7 @@ object ManagerFindPair {
     private var timer: CountDownTimer? = null
     private var startTime: Long = 0
     private var elapsedTime: Long = 0
+    private var gameStarted = false
 
     fun initFindPairGame(binding: ViewBinding, context: Context) {
         preferences =
@@ -106,7 +107,7 @@ object ManagerFindPair {
             pairList.add(Pairs(imageRes, pos = position++))
         }
 
-        if (selectedLevel == "Easy") {
+        if ((selectedLevel == "Easy") || (selectedLevel == "Hard")) {
             pairList.add(Pairs(imageList[0], pos = position++))
         }
 
@@ -252,13 +253,17 @@ object ManagerFindPair {
     private fun handlePairClick(pairItem: Pairs, position: Int) {
         if (flipping || pairItem.flipped || pairItem.matched) return
 
+        if (!gameStarted) {
+            startTimer()
+            gameStarted = true
+        }
+
         pairItem.flipped = true
         pairItem.pos = position
         adapter.notifyItemChanged(position)
 
         if (firstPair == null) {
             firstPair = pairItem
-            startTimer()
         } else {
             secondPair = pairItem
             flipping = true
@@ -282,6 +287,8 @@ object ManagerFindPair {
 
     private fun stopTimer() {
         timer?.cancel()
+        startTime = 0
+        elapsedTime = 0
     }
 
     private fun checkMatchPair() {
@@ -322,17 +329,12 @@ object ManagerFindPair {
 
         adapter.notifyDataSetChanged()
         stepsCount = 0
+        gameStarted = false
+        stopTimer()
     }
 
     private fun recordGameStats() {
         val levelStats = stats[selectedLevel]!!
-
-        /*levelStats.gamesPlayed++
-        if (stepsCount <= 20) {
-            levelStats.wins++
-        } else {
-            levelStats.losses++
-        }*/
 
         if (elapsedTime < levelStats.bestTime) {
             levelStats.bestTime = elapsedTime
@@ -342,7 +344,6 @@ object ManagerFindPair {
         }
 
         ScoreManager.saveStatsScoreFindPairGame(preferences)
-        stopTimer()
         stepsCount = 0
     }
 
