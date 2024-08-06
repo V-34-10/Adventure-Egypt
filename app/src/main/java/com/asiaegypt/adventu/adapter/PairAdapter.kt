@@ -29,10 +29,16 @@ class PairAdapter (
         val itemView = layoutInflater.inflate(R.layout.pair_image, parent, false)
         val cardImage: ImageView = itemView.findViewById(R.id.pairResImage)
 
-        val cardSize = if (level == "Medium" || level == "Hard") {
-            80.dpToPx(parent.context)
-        } else {
-            100.dpToPx(parent.context)
+        val cardSize = when (level) {
+            "Medium" -> {
+                55.dpToPx(parent.context)
+            }
+            "Hard" -> {
+                40.dpToPx(parent.context)
+            }
+            else -> {
+                70.dpToPx(parent.context)
+            }
         }
         cardImage.layoutParams.width = cardSize
         cardImage.layoutParams.height = cardSize
