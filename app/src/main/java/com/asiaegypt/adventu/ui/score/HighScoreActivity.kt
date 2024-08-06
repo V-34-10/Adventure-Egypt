@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityHighScoreBinding
@@ -30,24 +31,36 @@ class HighScoreActivity : AppCompatActivity() {
     private fun initScoreFindPairGame() {
         loadStatsScoreFindPairGame(preferences)
 
-        val easyStatsScoreFindPair = ManagerFindPair.stats["Easy"]!!
-        val mediumStatsScoreFindPair = ManagerFindPair.stats["Medium"]!!
-        val hardStatsScoreFindPair = ManagerFindPair.stats["Hard"]!!
+        val stats = ManagerFindPair.stats
 
-        binding.titleTime.text =
-            getString(R.string.title_time) + easyStatsScoreFindPair.bestTime.toString()
-        binding.titleSteps.text =
-            getString(R.string.title_steps) + easyStatsScoreFindPair.bestSteps.toString()
+        val easyStats = stats["Easy"]!!
+        val mediumStats = stats["Medium"]!!
+        val hardStats = stats["Hard"]!!
 
-        binding.titleTimeMedium.text =
-            getString(R.string.title_time_medium) + mediumStatsScoreFindPair.bestTime.toString()
-        binding.titleStepsMedium.text =
-            getString(R.string.title_steps_medium) + mediumStatsScoreFindPair.bestSteps.toString()
+        setScoreText(binding.titleTime, R.string.title_time, easyStats.bestTime)
+        binding.titleSteps.text = getString(R.string.title_steps) + easyStats.bestSteps
 
-        binding.titleTimeHard.text =
-            getString(R.string.title_time_hard) + hardStatsScoreFindPair.bestTime.toString()
-        binding.titleStepsHard.text =
-            getString(R.string.title_steps_hard) + hardStatsScoreFindPair.bestSteps.toString()
+        setScoreText(binding.titleTimeMedium, R.string.title_time_medium, mediumStats.bestTime)
+        binding.titleStepsMedium.text = getString(R.string.title_steps_medium) + mediumStats.bestSteps
+
+        setScoreText(binding.titleTimeHard, R.string.title_time_hard, hardStats.bestTime)
+        binding.titleStepsHard.text = getString(R.string.title_steps_hard) + hardStats.bestSteps
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setScoreText(textView: TextView, stringResId: Int, bestTime: Long) {
+        val formattedTime = if (bestTime == Long.MAX_VALUE) {
+            "00:00"
+        } else {
+            formatTime(bestTime)
+        }
+        textView.text = getString(stringResId) + formattedTime
+    }
+
+    private fun formatTime(timeInMillis: Long): String {
+        val minutes = (timeInMillis / 1000) / 60
+        val seconds = (timeInMillis / 1000) % 60
+        return String.format("%02d:%02d", minutes, seconds)
     }
 
     override fun onResume() {
