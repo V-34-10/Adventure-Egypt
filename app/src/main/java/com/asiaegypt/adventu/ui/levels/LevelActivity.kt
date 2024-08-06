@@ -34,6 +34,7 @@ class LevelActivity : AppCompatActivity() {
             preferences.edit().putString("levelFindPair", getString(R.string.button_level_easy))
                 .apply()
             startActivity(Intent(this@LevelActivity, SceneActivity::class.java))
+            managerMusic.release()
         }
         binding.buttonLevelMedium.setOnClickListener {
             animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
@@ -41,6 +42,7 @@ class LevelActivity : AppCompatActivity() {
             preferences.edit().putString("levelFindPair", getString(R.string.button_level_medium))
                 .apply()
             startActivity(Intent(this@LevelActivity, SceneActivity::class.java))
+            managerMusic.release()
         }
         binding.buttonLevelHard.setOnClickListener {
             animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
@@ -48,6 +50,7 @@ class LevelActivity : AppCompatActivity() {
             preferences.edit().putString("levelFindPair", getString(R.string.button_level_hard))
                 .apply()
             startActivity(Intent(this@LevelActivity, SceneActivity::class.java))
+            managerMusic.release()
         }
     }
 
@@ -57,6 +60,7 @@ class LevelActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         super.onBackPressed()
+        managerMusic.release()
     }
 
     override fun onResume() {

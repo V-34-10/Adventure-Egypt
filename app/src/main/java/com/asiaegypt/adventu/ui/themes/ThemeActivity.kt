@@ -34,6 +34,7 @@ class ThemeActivity : AppCompatActivity() {
             preferences.edit().putString("themeFindPair", getString(R.string.button_theme_first))
                 .apply()
             startActivity(Intent(this@ThemeActivity, LevelActivity::class.java))
+            managerMusic.release()
         }
         binding.buttonThemeSecond.setOnClickListener {
             animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
@@ -41,6 +42,7 @@ class ThemeActivity : AppCompatActivity() {
             preferences.edit().putString("themeFindPair", getString(R.string.button_theme_second))
                 .apply()
             startActivity(Intent(this@ThemeActivity, LevelActivity::class.java))
+            managerMusic.release()
         }
         binding.buttonThemeThree.setOnClickListener {
             animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
@@ -48,6 +50,7 @@ class ThemeActivity : AppCompatActivity() {
             preferences.edit().putString("themeFindPair", getString(R.string.button_theme_three))
                 .apply()
             startActivity(Intent(this@ThemeActivity, LevelActivity::class.java))
+            managerMusic.release()
         }
     }
 
@@ -57,6 +60,7 @@ class ThemeActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         super.onBackPressed()
+        managerMusic.release()
     }
 
     override fun onResume() {

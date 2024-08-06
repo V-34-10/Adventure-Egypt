@@ -80,5 +80,6 @@ class HighScoreActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
+        managerMusic.release()
     }
 }

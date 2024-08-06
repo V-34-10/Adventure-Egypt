@@ -24,6 +24,7 @@ class SettingsActivity : AppCompatActivity() {
         window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
         managerMusic = MusicManager(this)
         preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
+        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
         initResourceMusicButtonCheck()
         changeControlVolumeBar()
         choiceSettingsAppButton()
@@ -108,11 +109,22 @@ class SettingsActivity : AppCompatActivity() {
         managerMusic.release()
     }
 
+    override fun onResume() {
+        super.onResume()
+        managerMusic.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        managerMusic.pause()
+    }
+
     @Deprecated(
         "Deprecated in Java",
         ReplaceWith("super.onBackPressed()", "androidx.appcompat.app.AppCompatActivity")
     )
     override fun onBackPressed() {
         super.onBackPressed()
+        managerMusic.release()
     }
 }

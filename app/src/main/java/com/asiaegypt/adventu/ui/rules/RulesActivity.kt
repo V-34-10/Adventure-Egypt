@@ -33,6 +33,17 @@ class RulesActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         super.onBackPressed()
+        managerMusic.release()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        managerMusic.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        managerMusic.pause()
     }
 
     override fun onDestroy() {

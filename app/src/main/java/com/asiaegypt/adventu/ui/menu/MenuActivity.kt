@@ -32,16 +32,19 @@ class MenuActivity : AppCompatActivity() {
         var animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
         binding.buttonStart.setOnClickListener {
             it.startAnimation(animationButton)
+            managerMusic.release()
             startActivity(Intent(this@MenuActivity, ThemeActivity::class.java))
         }
         binding.buttonRules.setOnClickListener {
             animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
             it.startAnimation(animationButton)
+            managerMusic.release()
             startActivity(Intent(this@MenuActivity, RulesActivity::class.java))
         }
         binding.buttonSettings.setOnClickListener {
             animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
             it.startAnimation(animationButton)
+            managerMusic.release()
             startActivity(Intent(this@MenuActivity, SettingsActivity::class.java))
         }
         binding.buttonExit.setOnClickListener {
@@ -59,7 +62,18 @@ class MenuActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         super.onBackPressed()
-        finish()
+        managerMusic.release()
+        finishAffinity()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        managerMusic.resume()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        managerMusic.pause()
     }
 
     override fun onDestroy() {
