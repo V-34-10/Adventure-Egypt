@@ -66,11 +66,11 @@ class SettingsActivity : AppCompatActivity() {
 
     private fun initResourceMusicButtonCheck() {
         if (preferences.getBoolean("music_status", false)) {
-            binding.buttonOn.setBackgroundResource(R.drawable.button_music_on)
-            binding.buttonOff.setBackgroundResource(R.drawable.button_music_off_check)
-        } else {
             binding.buttonOn.setBackgroundResource(R.drawable.button_music_on_check)
             binding.buttonOff.setBackgroundResource(R.drawable.button_music_off)
+        } else {
+            binding.buttonOn.setBackgroundResource(R.drawable.button_music_on)
+            binding.buttonOff.setBackgroundResource(R.drawable.button_music_off_check)
         }
     }
 
