@@ -10,14 +10,13 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
-import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.adapter.PairAdapter
 import com.asiaegypt.adventu.databinding.FragmentActecBinding
 import com.asiaegypt.adventu.databinding.FragmentAsianBinding
 import com.asiaegypt.adventu.databinding.FragmentEgyptBinding
 import com.asiaegypt.adventu.model.Pairs
-import com.asiaegypt.adventu.model.ScoreStats
 import com.asiaegypt.adventu.ui.score.ScoreManager
+import com.asiaegypt.adventu.ui.score.ScoreManager.stats
 
 object ManagerFindPair {
     private lateinit var preferences: SharedPreferences
@@ -35,12 +34,6 @@ object ManagerFindPair {
     private var selectedTheme: String = ""
     private var stepsCount = 0
 
-    val stats = mutableMapOf(
-        "Easy" to ScoreStats(),
-        "Medium" to ScoreStats(),
-        "Hard" to ScoreStats()
-    )
-
     private var timer: CountDownTimer? = null
     private var startTime: Long = 0
     private var elapsedTime: Long = 0
@@ -54,18 +47,11 @@ object ManagerFindPair {
         val spanCount = getSpanCountLevel()
         adapter = PairAdapter(pairList, selectedLevel, selectedTheme)
 
-        when (binding) {
-            is FragmentActecBinding -> {
-                recyclerViewSceneGame = binding.sceneGame
-            }
-
-            is FragmentEgyptBinding -> {
-                recyclerViewSceneGame = binding.sceneGame
-            }
-
-            is FragmentAsianBinding -> {
-                recyclerViewSceneGame = binding.sceneGame
-            }
+        recyclerViewSceneGame = when (binding) {
+            is FragmentActecBinding -> binding.sceneGame
+            is FragmentEgyptBinding -> binding.sceneGame
+            is FragmentAsianBinding -> binding.sceneGame
+            else -> throw IllegalArgumentException("Unsupported binding type")
         }
 
         recyclerViewSceneGame.layoutManager = GridLayoutManager(context, spanCount)
@@ -78,13 +64,11 @@ object ManagerFindPair {
         }
     }
 
-    private fun getSpanCountLevel(): Int {
-        return when (selectedLevel) {
-            "Easy" -> 3
-            "Medium" -> 4
-            "Hard" -> 5
-            else -> 3
-        }
+    private fun getSpanCountLevel(): Int = when (selectedLevel) {
+        "Easy" -> 3
+        "Medium" -> 4
+        "Hard" -> 5
+        else -> 3
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -97,7 +81,7 @@ object ManagerFindPair {
         }
 
         imageList.clear()
-        imageList.addAll(choiceImagesForLevelAndThemes(selectedLevel))
+        imageList.addAll(ImageProvider.getImagesForLevelAndTheme(selectedLevel, selectedTheme))
 
         pairList.clear()
         var position = 0
@@ -113,141 +97,6 @@ object ManagerFindPair {
 
         pairList.shuffle()
         adapter.notifyDataSetChanged()
-    }
-
-    private fun choiceImagesForLevelAndThemes(level: String): List<Int> {
-        val baseImages = when (selectedTheme) {
-            "Actec" -> {
-                when (level) {
-                    "Easy" -> listOf(
-                        R.drawable.pair_actec_easy_1,
-                        R.drawable.pair_actec_easy_2,
-                        R.drawable.pair_actec_easy_3
-                    )
-
-                    "Medium" -> listOf(
-                        R.drawable.pair_actec_medium_1,
-                        R.drawable.pair_actec_medium_2,
-                        R.drawable.pair_actec_medium_3,
-                        R.drawable.pair_actec_medium_4
-                    )
-
-                    "Hard" -> listOf(
-                        R.drawable.pair_actec_hard_1,
-                        R.drawable.pair_actec_hard_2,
-                        R.drawable.pair_actec_hard_3,
-                        R.drawable.pair_actec_hard_4,
-                        R.drawable.pair_actec_hard_5
-                    )
-
-                    else -> listOf(
-                        R.drawable.pair_actec_easy_1,
-                        R.drawable.pair_actec_easy_2,
-                        R.drawable.pair_actec_easy_3
-                    )
-                }
-            }
-
-            "Egypt" -> {
-                when (level) {
-                    "Easy" -> listOf(
-                        R.drawable.pair_egypt_easy_1,
-                        R.drawable.pair_egypt_easy_2,
-                        R.drawable.pair_egypt_easy_3
-                    )
-
-                    "Medium" -> listOf(
-                        R.drawable.pair_egypt_medium_1,
-                        R.drawable.pair_egypt_medium_2,
-                        R.drawable.pair_egypt_medium_3,
-                        R.drawable.pair_egypt_medium_4
-                    )
-
-                    "Hard" -> listOf(
-                        R.drawable.pair_egypt_hard_1,
-                        R.drawable.pair_egypt_hard_2,
-                        R.drawable.pair_egypt_hard_3,
-                        R.drawable.pair_egypt_hard_4,
-                        R.drawable.pair_egypt_hard_5
-                    )
-
-                    else -> listOf(
-                        R.drawable.pair_egypt_easy_1,
-                        R.drawable.pair_egypt_easy_2,
-                        R.drawable.pair_egypt_easy_3
-                    )
-                }
-            }
-
-            "Asian" -> {
-                when (level) {
-                    "Easy" -> listOf(
-                        R.drawable.pair_asian_easy_1,
-                        R.drawable.pair_asian_easy_2,
-                        R.drawable.pair_asian_easy_3
-                    )
-
-                    "Medium" -> listOf(
-                        R.drawable.pair_asian_medium_1,
-                        R.drawable.pair_asian_medium_2,
-                        R.drawable.pair_asian_medium_3,
-                        R.drawable.pair_asian_medium_4
-                    )
-
-                    "Hard" -> listOf(
-                        R.drawable.pair_asian_hard_1,
-                        R.drawable.pair_asian_hard_2,
-                        R.drawable.pair_asian_hard_3,
-                        R.drawable.pair_asian_hard_4,
-                        R.drawable.pair_asian_hard_5
-                    )
-
-                    else -> listOf(
-                        R.drawable.pair_asian_easy_1,
-                        R.drawable.pair_asian_easy_2,
-                        R.drawable.pair_asian_easy_3
-                    )
-                }
-            }
-
-            else -> {
-                when (level) {
-                    "Easy" -> listOf(
-                        R.drawable.pair_actec_easy_1,
-                        R.drawable.pair_actec_easy_2,
-                        R.drawable.pair_actec_easy_3
-                    )
-
-                    "Medium" -> listOf(
-                        R.drawable.pair_actec_medium_1,
-                        R.drawable.pair_actec_medium_2,
-                        R.drawable.pair_actec_medium_3,
-                        R.drawable.pair_actec_medium_4
-                    )
-
-                    "Hard" -> listOf(
-                        R.drawable.pair_actec_hard_1,
-                        R.drawable.pair_actec_hard_2,
-                        R.drawable.pair_actec_hard_3,
-                        R.drawable.pair_actec_hard_4,
-                        R.drawable.pair_actec_hard_5
-                    )
-
-                    else -> listOf(
-                        R.drawable.pair_actec_easy_1,
-                        R.drawable.pair_actec_easy_2,
-                        R.drawable.pair_actec_easy_3
-                    )
-                }
-            }
-        }
-
-        return when (level) {
-            "Easy" -> baseImages + baseImages.take(4) // 9 карток
-            "Medium" -> baseImages + baseImages + baseImages.take(3) // 16 карток
-            "Hard" -> baseImages + baseImages + baseImages + baseImages + baseImages.take(4) // 25 карток
-            else -> baseImages + baseImages.take(4) // 9 карток
-        }
     }
 
     private fun handlePairClick(pairItem: Pairs, position: Int) {
