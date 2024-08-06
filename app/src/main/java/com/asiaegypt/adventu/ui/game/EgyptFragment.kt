@@ -40,13 +40,26 @@ class EgyptFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MusicStart.musicStartMode(R.raw.music_actec, managerMusic, preferences)
+        MusicStart.musicStartMode(R.raw.music_egypt, managerMusic, preferences)
 
         choiceLevelPairGame = preferences.getString("levelFindPair", "").toString()
-        binding.textLevel.text = "Level\\n$choiceLevelPairGame"
+        binding.textLevel.text = "Level\n$choiceLevelPairGame"
+        setBackground()
 
         context?.let { ManagerFindPair.initFindPairGame(binding, it) }
         initControlBarGame()
+    }
+
+    private fun setBackground() {
+        when (choiceLevelPairGame) {
+            "Medium" -> {
+                binding.backgroundEgypt.setBackgroundResource(R.drawable.background_egypt_medium)
+            }
+
+            "Hard" -> {
+                binding.backgroundEgypt.setBackgroundResource(R.drawable.background_egypt_hard)
+            }
+        }
     }
 
     private fun initControlBarGame() {

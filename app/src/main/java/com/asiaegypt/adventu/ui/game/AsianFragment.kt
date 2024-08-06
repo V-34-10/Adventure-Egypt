@@ -40,13 +40,26 @@ class AsianFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MusicStart.musicStartMode(R.raw.music_actec, managerMusic, preferences)
+        MusicStart.musicStartMode(R.raw.music_asian, managerMusic, preferences)
 
         choiceLevelPairGame = preferences.getString("levelFindPair", "").toString()
-        binding.textLevel.text = "Level\\n$choiceLevelPairGame"
+        binding.textLevel.text = "Level\n$choiceLevelPairGame"
+        setBackground()
 
         context?.let { ManagerFindPair.initFindPairGame(binding, it) }
         initControlBarGame()
+    }
+
+    private fun setBackground() {
+        when (choiceLevelPairGame) {
+            "Medium" -> {
+                binding.backgroundAsian.setBackgroundResource(R.drawable.background_asian_medium)
+            }
+
+            "Hard" -> {
+                binding.backgroundAsian.setBackgroundResource(R.drawable.background_asian_hard)
+            }
+        }
     }
 
     private fun initControlBarGame() {

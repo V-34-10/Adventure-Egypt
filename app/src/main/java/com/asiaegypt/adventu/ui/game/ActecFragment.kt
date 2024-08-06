@@ -44,10 +44,23 @@ class ActecFragment : Fragment() {
         MusicStart.musicStartMode(R.raw.music_actec, managerMusic, preferences)
 
         choiceLevelPairGame = preferences.getString("levelFindPair", "").toString()
-        binding.textLevel.text = "Level\\n$choiceLevelPairGame"
+        binding.textLevel.text = "Level\n$choiceLevelPairGame"
+        setBackground()
 
         context?.let { ManagerFindPair.initFindPairGame(binding, it) }
         initControlBarGame()
+    }
+
+    private fun setBackground() {
+        when (choiceLevelPairGame) {
+            "Medium" -> {
+                binding.backgroundActec.setBackgroundResource(R.drawable.background_actec_medium)
+            }
+
+            "Hard" -> {
+                binding.backgroundActec.setBackgroundResource(R.drawable.background_actec_hard)
+            }
+        }
     }
 
     private fun initControlBarGame() {
