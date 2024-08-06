@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityHighScoreBinding
-import com.asiaegypt.adventu.ui.game.ManagerFindPair
 import com.asiaegypt.adventu.ui.score.ScoreManager.loadStatsScoreFindPairGame
 import com.asiaegypt.adventu.ui.settings.MusicManager
 import com.asiaegypt.adventu.ui.settings.MusicStart
@@ -31,7 +30,7 @@ class HighScoreActivity : AppCompatActivity() {
     private fun initScoreFindPairGame() {
         loadStatsScoreFindPairGame(preferences)
 
-        val stats = ManagerFindPair.stats
+        val stats = ScoreManager.stats
 
         val easyStats = stats["Easy"]!!
         val mediumStats = stats["Medium"]!!
