@@ -24,17 +24,17 @@ import java.util.concurrent.TimeUnit
 class AdsSection(
     private val activity: Activity,
     private val binding: ActivityMainBinding
-) {
+) : AdsService {
     private var linkJSON: String =
-        "https://on.kabushinoko.com/interstitial" //TODO change on release
+        "https://on.kabushinoko.com/interstitial"
     private lateinit var cookies: String
     private lateinit var userAgent: String
     private var preferences: SharedPreferences =
         activity.getSharedPreferences("AsianEgyptAdventurePref", Context.MODE_PRIVATE)
     private var call: Call? = null
-    private var isTimeUp = false
+    private var isTimeOver = false
     private var latch = CountDownLatch(1)
-    fun fetchInterstitialData() {
+    override fun fetchAndLoadAds() {
         latch = CountDownLatch(1)
         val client = OkHttpClient.Builder()
             .callTimeout(10, TimeUnit.SECONDS)
@@ -66,47 +66,51 @@ class AdsSection(
 
                     val json = response.body?.string()
                     json?.let {
-                        parseJsonAndOpenLinks(it, cookies, userAgent)
+                        parseJsonAndLoadImage(it, cookies, userAgent)
                     }
                 }
                 latch.countDown()
             }
         })
+        checkTimeOut()
+    }
+
+    private fun checkTimeOut() {
         if (!latch.await(10, TimeUnit.SECONDS)) {
-            isTimeUp = true
+            isTimeOver = true
             call?.cancel()
             loadingMenuApp()
         }
     }
 
-    private fun loadingMenuApp() {
+    override fun loadingMenuApp() {
         activity.runOnUiThread {
             activity.startActivity(Intent(activity, MenuActivity::class.java))
         }
         activity.finish()
     }
 
-    fun cancel() {
+    override fun cancel() {
         if (call?.isCanceled() == false) {
             call?.cancel()
         }
     }
 
-    private fun parseJsonAndOpenLinks(json: String, cookies: String?, userAgent: String?) {
+    private fun parseJsonAndLoadImage(json: String, cookies: String?, userAgent: String?) {
         try {
             val jsonObject = JSONObject(json)
             val actionUrl = jsonObject.getString("action")
             val sourceUrl = jsonObject.getString("source")
 
-            saveLinksAndHeadersToSharedPreferences(actionUrl, sourceUrl, cookies, userAgent)
+            saveAdsData(actionUrl, sourceUrl, cookies, userAgent)
 
-            loadImage(sourceUrl, actionUrl, cookies, userAgent)
+            loadImageAds(sourceUrl, actionUrl, cookies, userAgent)
         } catch (e: JSONException) {
             e.printStackTrace()
         }
     }
 
-    private fun saveLinksAndHeadersToSharedPreferences(
+    private fun saveAdsData(
         actionUrl: String,
         sourceUrl: String,
         cookies: String?,
@@ -120,7 +124,7 @@ class AdsSection(
         editor.apply()
     }
 
-    fun loadImage(
+    override fun loadImageAds(
         imageUrl: String,
         actionUrl: String,
         cookies: String?,
@@ -147,15 +151,23 @@ class AdsSection(
                 response.use {
                     if (!response.isSuccessful) throw IOException("Unexpected code $response")
 
-                    // get banner and set
                     val inputStream = response.body?.byteStream()
                     val bitmap = BitmapFactory.decodeStream(inputStream)
 
                     activity.runOnUiThread {
-                        if (!isTimeUp) {
+                        if (!isTimeOver) {
+
                             binding.resBanner.visibility = View.VISIBLE
                             binding.resBanner.setImageBitmap(bitmap)
-                            setClickListenerOnImage(actionUrl)
+
+                            binding.resBanner.setOnClickListener {
+                                activity.startActivity(
+                                    Intent(
+                                        Intent.ACTION_VIEW,
+                                        Uri.parse(actionUrl)
+                                    )
+                                )
+                            }
                         }
                     }
 
@@ -163,17 +175,6 @@ class AdsSection(
                 latch.countDown()
             }
         })
-        if (!latch.await(10, TimeUnit.SECONDS)) {
-            isTimeUp = true
-            call?.cancel()
-            loadingMenuApp()
-        }
-    }
-
-    private fun setClickListenerOnImage(actionUrl: String) {
-        binding.resBanner.setOnClickListener {
-            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(actionUrl))
-            activity.startActivity(intent)
-        }
+        checkTimeOut()
     }
 }
