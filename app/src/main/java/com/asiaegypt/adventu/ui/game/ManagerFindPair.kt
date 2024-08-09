@@ -19,6 +19,7 @@ import com.asiaegypt.adventu.ui.score.ScoreManager
 import com.asiaegypt.adventu.ui.score.ScoreManager.stats
 
 object ManagerFindPair {
+    private var delay = 1000L
     private lateinit var preferences: SharedPreferences
     private lateinit var recyclerViewSceneGame: RecyclerView
 
@@ -40,11 +41,11 @@ object ManagerFindPair {
     private var gameStarted = false
 
     fun initFindPairGame(binding: ViewBinding, context: Context) {
-        preferences =
-            context.getSharedPreferences("AsianEgyptAdventurePref", AppCompatActivity.MODE_PRIVATE)
-        selectedLevelPairGame = preferences.getString("levelFindPair", "").toString()
-        selectedThemePairGame = preferences.getString("themeFindPair", "").toString()
-        val spanCount = getSpanCountLevel()
+        preferences = GameSettings.getPreference(context)
+
+        selectedLevelPairGame = GameSettings.selectedLevel
+        selectedThemePairGame = GameSettings.selectedTheme
+
         adapterPair = PairAdapter(pairList, selectedLevelPairGame, selectedThemePairGame)
 
         recyclerViewSceneGame = when (binding) {
@@ -54,7 +55,8 @@ object ManagerFindPair {
             else -> throw IllegalArgumentException("Unsupported binding type")
         }
 
-        recyclerViewSceneGame.layoutManager = GridLayoutManager(context, spanCount)
+        recyclerViewSceneGame.layoutManager =
+            GridLayoutManager(context, selectedLevelPairGame.getSpanCount())
         recyclerViewSceneGame.adapter = adapterPair
 
         insertPairItems()
@@ -64,28 +66,19 @@ object ManagerFindPair {
         }
     }
 
-    private fun getSpanCountLevel(): Int = when (selectedLevelPairGame) {
-        "Easy" -> 3
-        "Medium" -> 4
-        "Hard" -> 5
-        else -> 3
-    }
-
-    private fun getPairsDependedLevel(): Int = when (selectedLevelPairGame) {
-        "Easy" -> 4
-        "Medium" -> 8
-        "Hard" -> 12
-        else -> 4
-    }
-
     @SuppressLint("NotifyDataSetChanged")
     private fun insertPairItems() {
+        var position = 0
         imageListPair.clear()
-        imageListPair.addAll(ImageProvider.getImagesForLevelAndTheme(selectedLevelPairGame, selectedThemePairGame))
+        imageListPair.addAll(
+            ImageProvider.getImagesForLevelAndTheme(
+                selectedLevelPairGame,
+                selectedThemePairGame
+            )
+        )
 
         pairList.clear()
-        var position = 0
-        for (i in 0 until getPairsDependedLevel()) {
+        for (i in 0 until selectedLevelPairGame.getNumPairs()) {
             val imageRes = imageListPair[i]
             pairList.add(Pairs(imageRes, pos = position++))
             pairList.add(Pairs(imageRes, pos = position++))
@@ -120,13 +113,13 @@ object ManagerFindPair {
             Handler(Looper.getMainLooper()).postDelayed({
                 checkMatchPair()
                 updateTextStepPair(binding)
-            }, 1000)
+            }, delay)
         }
     }
 
     private fun startTimer() {
         startTime = System.currentTimeMillis()
-        timer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
+        timer = object : CountDownTimer(Long.MAX_VALUE, delay) {
             override fun onTick(millisUntilFinished: Long) {
                 elapsedTime = System.currentTimeMillis() - startTime
             }
@@ -155,12 +148,13 @@ object ManagerFindPair {
         stepSearchPair++
         adapterPair.notifyItemChanged(firstPos)
         adapterPair.notifyItemChanged(secondPos)
+
         firstPair = null
         secondPair = null
         flippingPair = false
 
         if (checkGameOver()) {
-            recordGameStats()
+            saveBestStatsFindGame()
         }
     }
 
@@ -192,7 +186,7 @@ object ManagerFindPair {
         }
     }
 
-    private fun recordGameStats() {
+    private fun saveBestStatsFindGame() {
         val levelStats = stats[selectedLevelPairGame]!!
 
         if (elapsedTime < levelStats.bestTime) {
@@ -207,10 +201,9 @@ object ManagerFindPair {
     }
 
     private fun checkGameOver(): Boolean {
-        return if ((selectedLevelPairGame == "Easy") || (selectedLevelPairGame == "Hard")) {
-            pairList.count { it.matched } == pairList.size - 1
-        } else {
-            pairList.all { it.matched }
+        return when (selectedLevelPairGame) {
+            "Easy", "Hard" -> pairList.count { it.matched } == pairList.size - 1
+            else -> pairList.all { it.matched }
         }
     }
 }
