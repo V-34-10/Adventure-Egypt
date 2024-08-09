@@ -31,10 +31,10 @@ class PairAdapter (
 
         val cardSize = when (level) {
             "Medium" -> {
-                55.dpConvertToPx(parent.context)
+                60.dpConvertToPx(parent.context)
             }
             "Hard" -> {
-                40.dpConvertToPx(parent.context)
+                50.dpConvertToPx(parent.context)
             }
             else -> {
                 70.dpConvertToPx(parent.context)
