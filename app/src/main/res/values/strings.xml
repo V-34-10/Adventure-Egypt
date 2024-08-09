@@ -36,7 +36,7 @@
     <string name="title_steps_hard">Steps\n</string>
 
     <string name="button_score">button score</string>
-    <string name="text_default_balance">2000</string>
+    <string name="text_default_steps">0</string>
     <string name="default_win">WIN\n10000</string>
     <string name="pair_image">pair image</string>
 
