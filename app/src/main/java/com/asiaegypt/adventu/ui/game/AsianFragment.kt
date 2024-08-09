@@ -46,19 +46,15 @@ class AsianFragment : Fragment() {
         binding.textLevel.text = "Level\n$choiceLevelPairGame"
         setBackground()
 
+        GameSettings.init(requireContext())
         context?.let { ManagerFindPair.initFindPairGame(binding, it) }
         initControlBarGame()
     }
 
     private fun setBackground() {
         when (choiceLevelPairGame) {
-            "Medium" -> {
-                binding.backgroundAsian.setBackgroundResource(R.drawable.background_asian_medium)
-            }
-
-            "Hard" -> {
-                binding.backgroundAsian.setBackgroundResource(R.drawable.background_asian_hard)
-            }
+            "Medium" -> binding.backgroundAsian.setBackgroundResource(R.drawable.background_asian_medium)
+            "Hard" -> binding.backgroundAsian.setBackgroundResource(R.drawable.background_asian_hard)
         }
     }
 

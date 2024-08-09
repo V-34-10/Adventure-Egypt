@@ -46,19 +46,15 @@ class EgyptFragment : Fragment() {
         binding.textLevel.text = "Level\n$choiceLevelPairGame"
         setBackground()
 
+        GameSettings.init(requireContext())
         context?.let { ManagerFindPair.initFindPairGame(binding, it) }
         initControlBarGame()
     }
 
     private fun setBackground() {
         when (choiceLevelPairGame) {
-            "Medium" -> {
-                binding.backgroundEgypt.setBackgroundResource(R.drawable.background_egypt_medium)
-            }
-
-            "Hard" -> {
-                binding.backgroundEgypt.setBackgroundResource(R.drawable.background_egypt_hard)
-            }
+            "Medium" -> binding.backgroundEgypt.setBackgroundResource(R.drawable.background_egypt_medium)
+            "Hard" -> binding.backgroundEgypt.setBackgroundResource(R.drawable.background_egypt_hard)
         }
     }
 

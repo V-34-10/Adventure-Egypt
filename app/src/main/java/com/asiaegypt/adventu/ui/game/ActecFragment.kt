@@ -47,19 +47,15 @@ class ActecFragment : Fragment() {
         binding.textLevel.text = "Level\n$choiceLevelPairGame"
         setBackground()
 
+        GameSettings.init(requireContext())
         context?.let { ManagerFindPair.initFindPairGame(binding, it) }
         initControlBarGame()
     }
 
     private fun setBackground() {
         when (choiceLevelPairGame) {
-            "Medium" -> {
-                binding.backgroundActec.setBackgroundResource(R.drawable.background_actec_medium)
-            }
-
-            "Hard" -> {
-                binding.backgroundActec.setBackgroundResource(R.drawable.background_actec_hard)
-            }
+            "Medium" -> binding.backgroundActec.setBackgroundResource(R.drawable.background_actec_medium)
+            "Hard" -> binding.backgroundActec.setBackgroundResource(R.drawable.background_actec_hard)
         }
     }
 
