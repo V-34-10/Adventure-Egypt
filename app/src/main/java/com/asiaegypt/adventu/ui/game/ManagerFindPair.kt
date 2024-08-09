@@ -22,17 +22,17 @@ object ManagerFindPair {
     private lateinit var preferences: SharedPreferences
     private lateinit var recyclerViewSceneGame: RecyclerView
 
-    private lateinit var adapter: PairAdapter
+    private lateinit var adapterPair: PairAdapter
     private val pairList = mutableListOf<Pairs>()
 
     private var firstPair: Pairs? = null
     private var secondPair: Pairs? = null
-    private var flipping = false
-    private val imageList = mutableListOf<Int>()
+    private var flippingPair = false
+    private val imageListPair = mutableListOf<Int>()
 
-    private var selectedLevel: String = ""
-    private var selectedTheme: String = ""
-    private var stepsCount = 0
+    private var selectedLevelPairGame: String = ""
+    private var selectedThemePairGame: String = ""
+    private var stepSearchPair = 0
 
     private var timer: CountDownTimer? = null
     private var startTime: Long = 0
@@ -42,10 +42,10 @@ object ManagerFindPair {
     fun initFindPairGame(binding: ViewBinding, context: Context) {
         preferences =
             context.getSharedPreferences("AsianEgyptAdventurePref", AppCompatActivity.MODE_PRIVATE)
-        selectedLevel = preferences.getString("levelFindPair", "").toString()
-        selectedTheme = preferences.getString("themeFindPair", "").toString()
+        selectedLevelPairGame = preferences.getString("levelFindPair", "").toString()
+        selectedThemePairGame = preferences.getString("themeFindPair", "").toString()
         val spanCount = getSpanCountLevel()
-        adapter = PairAdapter(pairList, selectedLevel, selectedTheme)
+        adapterPair = PairAdapter(pairList, selectedLevelPairGame, selectedThemePairGame)
 
         recyclerViewSceneGame = when (binding) {
             is FragmentActecBinding -> binding.sceneGame
@@ -55,52 +55,52 @@ object ManagerFindPair {
         }
 
         recyclerViewSceneGame.layoutManager = GridLayoutManager(context, spanCount)
-        recyclerViewSceneGame.adapter = adapter
+        recyclerViewSceneGame.adapter = adapterPair
 
         insertPairItems()
 
-        adapter.onPairClick = { cardItem, position ->
-            handlePairClick(cardItem, position)
+        adapterPair.onPairClick = { cardItem, position ->
+            handlePairClick(cardItem, position, binding)
         }
     }
 
-    private fun getSpanCountLevel(): Int = when (selectedLevel) {
+    private fun getSpanCountLevel(): Int = when (selectedLevelPairGame) {
         "Easy" -> 3
         "Medium" -> 4
         "Hard" -> 5
         else -> 3
     }
 
+    private fun getPairsDependedLevel(): Int = when (selectedLevelPairGame) {
+        "Easy" -> 4
+        "Medium" -> 8
+        "Hard" -> 12
+        else -> 4
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun insertPairItems() {
-        val numPairs = when (selectedLevel) {
-            "Easy" -> 4 // 4 пари для easy (8 карток)
-            "Medium" -> 8 // 8 пар для medium (16 карток)
-            "Hard" -> 12 // 12 пар для hard (24 карток)
-            else -> 4
-        }
-
-        imageList.clear()
-        imageList.addAll(ImageProvider.getImagesForLevelAndTheme(selectedLevel, selectedTheme))
+        imageListPair.clear()
+        imageListPair.addAll(ImageProvider.getImagesForLevelAndTheme(selectedLevelPairGame, selectedThemePairGame))
 
         pairList.clear()
         var position = 0
-        for (i in 0 until numPairs) {
-            val imageRes = imageList[i]
+        for (i in 0 until getPairsDependedLevel()) {
+            val imageRes = imageListPair[i]
             pairList.add(Pairs(imageRes, pos = position++))
             pairList.add(Pairs(imageRes, pos = position++))
         }
 
-        if ((selectedLevel == "Easy") || (selectedLevel == "Hard")) {
-            pairList.add(Pairs(imageList[0], pos = position++))
+        if ((selectedLevelPairGame == "Easy") || (selectedLevelPairGame == "Hard")) {
+            pairList.add(Pairs(imageListPair[0], pos = position++))
         }
 
         pairList.shuffle()
-        adapter.notifyDataSetChanged()
+        adapterPair.notifyDataSetChanged()
     }
 
-    private fun handlePairClick(pairItem: Pairs, position: Int) {
-        if (flipping || pairItem.flipped || pairItem.matched) return
+    private fun handlePairClick(pairItem: Pairs, position: Int, binding: ViewBinding) {
+        if (flippingPair || pairItem.flipped || pairItem.matched) return
 
         if (!gameStarted) {
             startTimer()
@@ -109,16 +109,17 @@ object ManagerFindPair {
 
         pairItem.flipped = true
         pairItem.pos = position
-        adapter.notifyItemChanged(position)
+        adapterPair.notifyItemChanged(position)
 
         if (firstPair == null) {
             firstPair = pairItem
         } else {
             secondPair = pairItem
-            flipping = true
+            flippingPair = true
 
             Handler(Looper.getMainLooper()).postDelayed({
                 checkMatchPair()
+                updateTextStepPair(binding)
             }, 1000)
         }
     }
@@ -151,12 +152,12 @@ object ManagerFindPair {
             firstPair?.flipped = false
             secondPair?.flipped = false
         }
-        stepsCount++
-        adapter.notifyItemChanged(firstPos)
-        adapter.notifyItemChanged(secondPos)
+        stepSearchPair++
+        adapterPair.notifyItemChanged(firstPos)
+        adapterPair.notifyItemChanged(secondPos)
         firstPair = null
         secondPair = null
-        flipping = false
+        flippingPair = false
 
         if (checkGameOver()) {
             recordGameStats()
@@ -164,10 +165,10 @@ object ManagerFindPair {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun resetFindPairGame() {
+    fun resetFindPairGame(binding: ViewBinding) {
         firstPair = null
         secondPair = null
-        flipping = false
+        flippingPair = false
 
         pairList.shuffle()
 
@@ -176,28 +177,37 @@ object ManagerFindPair {
             pair.matched = false
         }
 
-        adapter.notifyDataSetChanged()
-        stepsCount = 0
+        adapterPair.notifyDataSetChanged()
+        stepSearchPair = 0
+        updateTextStepPair(binding)
         gameStarted = false
         stopTimer()
     }
 
+    private fun updateTextStepPair(binding: ViewBinding) {
+        when (binding) {
+            is FragmentActecBinding -> binding.textSteps.text = stepSearchPair.toString()
+            is FragmentEgyptBinding -> binding.textSteps.text = stepSearchPair.toString()
+            is FragmentAsianBinding -> binding.textSteps.text = stepSearchPair.toString()
+        }
+    }
+
     private fun recordGameStats() {
-        val levelStats = stats[selectedLevel]!!
+        val levelStats = stats[selectedLevelPairGame]!!
 
         if (elapsedTime < levelStats.bestTime) {
             levelStats.bestTime = elapsedTime
         }
-        if (stepsCount < levelStats.bestSteps || levelStats.bestSteps == 0) {
-            levelStats.bestSteps = stepsCount
+        if (stepSearchPair < levelStats.bestSteps || levelStats.bestSteps == 0) {
+            levelStats.bestSteps = stepSearchPair
         }
 
         ScoreManager.saveStatsScoreFindPairGame(preferences)
-        stepsCount = 0
+        stepSearchPair = 0
     }
 
     private fun checkGameOver(): Boolean {
-        return if ((selectedLevel == "Easy") || (selectedLevel == "Hard")) {
+        return if ((selectedLevelPairGame == "Easy") || (selectedLevelPairGame == "Hard")) {
             pairList.count { it.matched } == pairList.size - 1
         } else {
             pairList.all { it.matched }
