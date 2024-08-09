@@ -67,12 +67,12 @@ class ActecFragment : Fragment() {
         var animationButton = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
         binding.btnPlay.setOnClickListener {
             it.startAnimation(animationButton)
-            ManagerFindPair.resetFindPairGame()
+            ManagerFindPair.resetFindPairGame(binding)
         }
         binding.btnHighScore.setOnClickListener {
             animationButton = AnimationUtils.loadAnimation(context, R.anim.scale_animation)
             it.startAnimation(animationButton)
-            ManagerFindPair.resetFindPairGame()
+            ManagerFindPair.resetFindPairGame(binding)
             startActivity(Intent(context, HighScoreActivity::class.java))
             activity?.finish()
         }
