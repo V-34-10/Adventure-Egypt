@@ -1,19 +1,12 @@
 package com.asiaegypt.adventu.ui.splash
 
-import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
-import android.view.animation.LinearInterpolator
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.asiaegypt.adventu.NetworkManager
-import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityMainBinding
 import com.asiaegypt.adventu.ui.ads.AdsSection
 import com.asiaegypt.adventu.ui.ads.AdsService
@@ -68,15 +61,15 @@ class MainActivity : AppCompatActivity() {
 
     private fun loadAds() {
         val preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
-        val actionUrl = preferences.getString("actionUrl", "")
-        val sourceUrl = preferences.getString("sourceUrl", "")
-        val cookies = preferences.getString("cookies", "")
-        val userAgent = preferences.getString("userAgent", "")
+        if (preferences.contains("cookies") && preferences.contains("userAgent")) {
+            val action = preferences.getString("actionUrl", "")
+            val source = preferences.getString("sourceUrl", "")
+            val cookies = preferences.getString("cookies", "")
+            val userAgent = preferences.getString("userAgent", "")
+            adsService.loadImageAds(source.toString(), action.toString(), cookies, userAgent)
 
-        if (actionUrl.isNullOrEmpty() || sourceUrl.isNullOrEmpty()) {
-            adsService.fetchAndLoadAds()
         } else {
-            adsService.loadImageAds(sourceUrl, actionUrl, cookies, userAgent)
+            adsService.fetchAndLoadAds()
         }
     }
 
