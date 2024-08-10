@@ -66,6 +66,9 @@ class LevelActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
         managerMusic.resume()
+        if (!managerMusic.checkPlaying()) {
+            MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+        }
     }
 
     override fun onPause() {
