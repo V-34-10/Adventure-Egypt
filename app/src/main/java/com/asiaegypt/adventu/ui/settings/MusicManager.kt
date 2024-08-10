@@ -34,12 +34,6 @@ class MusicManager(private val context: Context) {
         mediaPlayer.start()
     }
 
-    fun stop(@RawRes soundResId: Int) {
-        scope.launch {
-            releaseMediaPlayer(soundResId)
-        }
-    }
-
     fun pause() {
         mediaPlayers.values.forEach {
             if (it.isPlaying) {
@@ -54,6 +48,10 @@ class MusicManager(private val context: Context) {
                 it.start()
             }
         }
+    }
+
+    fun checkPlaying(): Boolean {
+        return mediaPlayers.values.any { it.isPlaying }
     }
 
     fun release() {
