@@ -4,8 +4,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.ActivityInfo
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivitySceneBinding
 import com.asiaegypt.adventu.ui.menu.MenuActivity
@@ -16,7 +16,7 @@ class SceneActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        NavigationManager.handleNavigationBarVisibility(this)
         preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
         initGameFindPairFragment()
     }

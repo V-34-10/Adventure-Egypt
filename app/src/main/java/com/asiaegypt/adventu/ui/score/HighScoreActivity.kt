@@ -3,9 +3,9 @@ package com.asiaegypt.adventu.ui.score
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityHighScoreBinding
 import com.asiaegypt.adventu.ui.score.ScoreManager.loadStatsScoreFindPairGame
@@ -19,7 +19,7 @@ class HighScoreActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        NavigationManager.handleNavigationBarVisibility(this)
         managerMusic = MusicManager(this)
         preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
         MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)

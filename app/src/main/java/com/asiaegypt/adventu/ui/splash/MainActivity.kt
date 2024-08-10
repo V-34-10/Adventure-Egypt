@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.NetworkManager
 import com.asiaegypt.adventu.databinding.ActivityMainBinding
 import com.asiaegypt.adventu.ui.ads.AdsSection
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        NavigationManager.handleNavigationBarVisibility(this)
         adsService = AdsSection(this, binding)
         loadingApp()
     }

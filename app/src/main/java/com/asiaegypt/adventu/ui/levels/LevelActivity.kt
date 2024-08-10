@@ -3,9 +3,9 @@ package com.asiaegypt.adventu.ui.levels
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
+import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityLevelBinding
 import com.asiaegypt.adventu.ui.game.SceneActivity
@@ -19,7 +19,7 @@ class LevelActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        NavigationManager.handleNavigationBarVisibility(this)
         managerMusic = MusicManager(this)
         preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
         MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)

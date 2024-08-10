@@ -8,6 +8,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivitySettingsBinding
 
@@ -20,7 +21,7 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        window.decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+        NavigationManager.handleNavigationBarVisibility(this)
         managerMusic = MusicManager(this)
         preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
         MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
