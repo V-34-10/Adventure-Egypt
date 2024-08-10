@@ -49,11 +49,11 @@
             android:layout_width="150dp"
             android:layout_height="50dp"
             android:layout_marginTop="25dp"
-            android:layout_marginEnd="90dp"
             android:background="@drawable/background_text_view"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btn_high_score"
+            app:layout_constraintStart_toEndOf="@+id/text_level"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
