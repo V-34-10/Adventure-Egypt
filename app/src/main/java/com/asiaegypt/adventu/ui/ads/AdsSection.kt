@@ -35,7 +35,6 @@ class AdsSection(
     private var isTimeOverResponse = false
     private var latchTime = CountDownLatch(1)
     override fun fetchAndLoadAds() {
-        latchTime = CountDownLatch(1)
         val client = OkHttpClient.Builder()
             .callTimeout(10, TimeUnit.SECONDS)
             .build()
@@ -130,7 +129,6 @@ class AdsSection(
         cookies: String?,
         userAgent: String?
     ) {
-        latchTime = CountDownLatch(1)
         val client = OkHttpClient.Builder()
             .callTimeout(10, TimeUnit.SECONDS)
             .build()
