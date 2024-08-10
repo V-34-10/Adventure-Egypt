@@ -1,13 +1,19 @@
 package com.asiaegypt.adventu.ui.splash
 
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
+import android.view.animation.LinearInterpolator
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.lifecycle.lifecycleScope
 import com.asiaegypt.adventu.NetworkManager
+import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityMainBinding
 import com.asiaegypt.adventu.ui.ads.AdsSection
 import com.asiaegypt.adventu.ui.ads.AdsService
@@ -42,11 +48,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun animationLoading(duration: Long) {
-        windowManager.defaultDisplay.getMetrics(DisplayMetrics())
-        val screenWidth = resources.displayMetrics.widthPixels - 1000
+        val displayMetrics = resources.displayMetrics
+        val screenWidth = displayMetrics.widthPixels
+        val progressBarWidth = (480 * displayMetrics.density).toInt()
+        val maxAnimationWidth = progressBarWidth - 10
+
         val layoutParams = binding.progressBar.line.layoutParams
 
-        val animation = ValueAnimator.ofInt(10, screenWidth).apply {
+        val animation = ValueAnimator.ofInt(10, maxAnimationWidth).apply {
             this.duration = duration
             addUpdateListener {
                 layoutParams.width = it.animatedValue as Int
