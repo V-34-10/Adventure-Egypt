@@ -72,8 +72,5 @@ class PairAdapter (
 
     override fun getItemCount(): Int = pairList.size
 
-    private fun Int.dpConvertToPx(context: Context): Int {
-        val density = context.resources.displayMetrics.density
-        return (this * density).toInt()
-    }
+    private fun Int.dpConvertToPx(context: Context): Int = (this * context.resources.displayMetrics.density).toInt()
 }
