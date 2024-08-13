@@ -25,25 +25,38 @@ object ImageProvider {
             "Easy" -> listOf(
                 R.drawable.pair_actec_easy_1,
                 R.drawable.pair_actec_easy_2,
-                R.drawable.pair_actec_easy_3
+                R.drawable.pair_actec_easy_3,
+                R.drawable.pair_actec_medium_2
             )
             "Medium" -> listOf(
                 R.drawable.pair_actec_medium_1,
                 R.drawable.pair_actec_medium_2,
                 R.drawable.pair_actec_medium_3,
-                R.drawable.pair_actec_medium_4
+                R.drawable.pair_actec_medium_4,
+                R.drawable.pair_actec_hard_1,
+                R.drawable.pair_actec_hard_2,
+                R.drawable.pair_actec_hard_3,
+                R.drawable.pair_actec_hard_4
             )
             "Hard" -> listOf(
                 R.drawable.pair_actec_hard_1,
                 R.drawable.pair_actec_hard_2,
                 R.drawable.pair_actec_hard_3,
                 R.drawable.pair_actec_hard_4,
-                R.drawable.pair_actec_hard_5
+                R.drawable.pair_actec_hard_5,
+                R.drawable.pair_actec_medium_1,
+                R.drawable.pair_actec_medium_2,
+                R.drawable.pair_actec_medium_3,
+                R.drawable.pair_actec_medium_4,
+                R.drawable.pair_actec_easy_1,
+                R.drawable.pair_actec_easy_2,
+                R.drawable.pair_actec_easy_3
             )
             else -> listOf(
                 R.drawable.pair_actec_easy_1,
                 R.drawable.pair_actec_easy_2,
-                R.drawable.pair_actec_easy_3
+                R.drawable.pair_actec_easy_3,
+                R.drawable.pair_actec_medium_2
             )
         }
     }
@@ -53,14 +66,19 @@ object ImageProvider {
             "Easy" -> listOf(
                 R.drawable.pair_egypt_easy_1,
                 R.drawable.pair_egypt_easy_2,
-                R.drawable.pair_egypt_easy_3
+                R.drawable.pair_egypt_easy_3,
+                R.drawable.pair_egypt_medium_1
             )
 
             "Medium" -> listOf(
                 R.drawable.pair_egypt_medium_1,
                 R.drawable.pair_egypt_medium_2,
                 R.drawable.pair_egypt_medium_3,
-                R.drawable.pair_egypt_medium_4
+                R.drawable.pair_egypt_medium_4,
+                R.drawable.pair_egypt_hard_1,
+                R.drawable.pair_egypt_hard_2,
+                R.drawable.pair_egypt_hard_3,
+                R.drawable.pair_egypt_hard_4
             )
 
             "Hard" -> listOf(
@@ -68,13 +86,21 @@ object ImageProvider {
                 R.drawable.pair_egypt_hard_2,
                 R.drawable.pair_egypt_hard_3,
                 R.drawable.pair_egypt_hard_4,
-                R.drawable.pair_egypt_hard_5
+                R.drawable.pair_egypt_hard_5,
+                R.drawable.pair_egypt_medium_1,
+                R.drawable.pair_egypt_medium_2,
+                R.drawable.pair_egypt_medium_3,
+                R.drawable.pair_egypt_medium_4,
+                R.drawable.pair_egypt_easy_1,
+                R.drawable.pair_egypt_easy_2,
+                R.drawable.pair_egypt_easy_3
             )
 
             else -> listOf(
                 R.drawable.pair_egypt_easy_1,
                 R.drawable.pair_egypt_easy_2,
-                R.drawable.pair_egypt_easy_3
+                R.drawable.pair_egypt_easy_3,
+                R.drawable.pair_egypt_medium_1
             )
         }
     }
@@ -84,14 +110,19 @@ object ImageProvider {
             "Easy" -> listOf(
                 R.drawable.pair_asian_easy_1,
                 R.drawable.pair_asian_easy_2,
-                R.drawable.pair_asian_easy_3
+                R.drawable.pair_asian_easy_3,
+                R.drawable.pair_asian_medium_1
             )
 
             "Medium" -> listOf(
                 R.drawable.pair_asian_medium_1,
                 R.drawable.pair_asian_medium_2,
                 R.drawable.pair_asian_medium_3,
-                R.drawable.pair_asian_medium_4
+                R.drawable.pair_asian_medium_4,
+                R.drawable.pair_asian_hard_1,
+                R.drawable.pair_asian_hard_2,
+                R.drawable.pair_asian_hard_3,
+                R.drawable.pair_asian_hard_4
             )
 
             "Hard" -> listOf(
@@ -99,13 +130,21 @@ object ImageProvider {
                 R.drawable.pair_asian_hard_2,
                 R.drawable.pair_asian_hard_3,
                 R.drawable.pair_asian_hard_4,
-                R.drawable.pair_asian_hard_5
+                R.drawable.pair_asian_hard_5,
+                R.drawable.pair_asian_medium_1,
+                R.drawable.pair_asian_medium_2,
+                R.drawable.pair_asian_medium_3,
+                R.drawable.pair_asian_medium_4,
+                R.drawable.pair_asian_easy_1,
+                R.drawable.pair_asian_easy_2,
+                R.drawable.pair_asian_easy_3
             )
 
             else -> listOf(
                 R.drawable.pair_asian_easy_1,
                 R.drawable.pair_asian_easy_2,
-                R.drawable.pair_asian_easy_3
+                R.drawable.pair_asian_easy_3,
+                R.drawable.pair_asian_medium_1
             )
         }
     }
