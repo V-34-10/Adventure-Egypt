@@ -11,62 +11,40 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class MusicManager(private val context: Context) {
-    private val mediaPlayers = mutableMapOf<Int, MediaPlayer>()
+    private val media = mutableMapOf<Int, MediaPlayer>()
     private val scope = CoroutineScope(Job() + Dispatchers.Main)
 
     fun play(@RawRes soundResId: Int, loop: Boolean = false) {
-        if (mediaPlayers.containsKey(soundResId) && mediaPlayers[soundResId]?.isPlaying == true) {
+        if (media.containsKey(soundResId) && media[soundResId]?.isPlaying == true) {
             return
         }
 
         val mediaPlayer = MediaPlayer.create(context, soundResId).apply {
             isLooping = loop
-            setOnCompletionListener {
-                if (!loop) {
-                    scope.launch {
-                        releaseMediaPlayer(soundResId)
-                    }
-                }
-            }
+            setOnCompletionListener { if (!loop) scope.launch { releaseMedia(soundResId) } }
+            start()
         }
 
-        mediaPlayers[soundResId] = mediaPlayer
-        mediaPlayer.start()
+        media[soundResId] = mediaPlayer
     }
 
-    fun pause() {
-        mediaPlayers.values.forEach {
-            if (it.isPlaying) {
-                it.pause()
-            }
-        }
-    }
+    fun pause() = media.values.forEach { if (it.isPlaying) it.pause() }
 
-    fun resume() {
-        mediaPlayers.values.forEach {
-            if (!it.isPlaying) {
-                it.start()
-            }
-        }
-    }
+    fun resume() = media.values.forEach { if (!it.isPlaying) it.start() }
 
-    fun checkPlaying(): Boolean {
-        return mediaPlayers.values.any { it.isPlaying }
-    }
+    fun checkPlaying(): Boolean = media.values.any { it.isPlaying }
 
     fun release() {
         scope.cancel()
-        mediaPlayers.values.forEach { it.release() }
-        mediaPlayers.clear()
+        media.values.forEach(MediaPlayer::release)
+        media.clear()
     }
 
-    private fun releaseMediaPlayer(soundResId: Int) {
-        mediaPlayers[soundResId]?.let {
-            if (it.isPlaying) {
-                it.stop()
-            }
-            it.release()
-            mediaPlayers.remove(soundResId)
+    private fun releaseMedia(soundResId: Int) {
+        media[soundResId]?.run {
+            if (isPlaying) stop()
+            release()
+            media.remove(soundResId)
         }
     }
 }
