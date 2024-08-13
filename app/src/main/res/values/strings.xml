@@ -39,5 +39,6 @@
     <string name="text_default_steps">0</string>
     <string name="default_win">WIN\n10000</string>
     <string name="pair_image">pair image</string>
+    <string name="toast_win">Congratulations, you won!</string>
 
 </resources>

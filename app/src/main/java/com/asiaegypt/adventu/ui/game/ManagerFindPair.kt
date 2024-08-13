@@ -6,10 +6,11 @@ import android.content.SharedPreferences
 import android.os.CountDownTimer
 import android.os.Handler
 import android.os.Looper
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
+import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.adapter.PairAdapter
 import com.asiaegypt.adventu.databinding.FragmentActecBinding
 import com.asiaegypt.adventu.databinding.FragmentAsianBinding
@@ -62,7 +63,7 @@ object ManagerFindPair {
         insertPairItems()
 
         adapterPair.onPairClick = { cardItem, position ->
-            handlePairClick(cardItem, position, binding)
+            handlePairClick(cardItem, position, binding, context)
         }
     }
 
@@ -92,7 +93,7 @@ object ManagerFindPair {
         adapterPair.notifyDataSetChanged()
     }
 
-    private fun handlePairClick(pairItem: Pairs, position: Int, binding: ViewBinding) {
+    private fun handlePairClick(pairItem: Pairs, position: Int, binding: ViewBinding, context: Context) {
         if (flippingPair || pairItem.flipped || pairItem.matched) return
 
         if (!gameStarted) {
@@ -111,7 +112,7 @@ object ManagerFindPair {
             flippingPair = true
 
             Handler(Looper.getMainLooper()).postDelayed({
-                checkMatchPair()
+                checkMatchPair(context)
                 updateTextStepPair(binding)
             }, delay)
         }
@@ -134,7 +135,7 @@ object ManagerFindPair {
         elapsedTime = 0
     }
 
-    private fun checkMatchPair() {
+    private fun checkMatchPair(context: Context) {
         val firstPos = firstPair?.pos ?: -1
         val secondPos = secondPair?.pos ?: -1
 
@@ -155,6 +156,7 @@ object ManagerFindPair {
 
         if (checkGameOver()) {
             saveBestStatsFindGame()
+            showWinToast(context)
         }
     }
 
@@ -184,6 +186,10 @@ object ManagerFindPair {
             is FragmentEgyptBinding -> binding.textSteps.text = stepSearchPair.toString()
             is FragmentAsianBinding -> binding.textSteps.text = stepSearchPair.toString()
         }
+    }
+
+    private fun showWinToast(context: Context) {
+        Toast.makeText(context, R.string.toast_win, Toast.LENGTH_SHORT).show()
     }
 
     private fun saveBestStatsFindGame() {
