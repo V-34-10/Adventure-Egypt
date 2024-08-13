@@ -85,7 +85,7 @@ object ManagerFindPair {
             pairList.add(Pairs(imageRes, pos = position++))
         }
 
-        if ((selectedLevelPairGame == "Easy") || (selectedLevelPairGame == "Hard")) {
+        if (selectedLevelPairGame in listOf("Easy", "Hard")) {
             pairList.add(Pairs(imageListPair[0], pos = position++))
         }
 
@@ -105,16 +105,16 @@ object ManagerFindPair {
         pairItem.pos = position
         adapterPair.notifyItemChanged(position)
 
-        if (firstPair == null) {
-            firstPair = pairItem
-        } else {
-            secondPair = pairItem
-            flippingPair = true
-
-            Handler(Looper.getMainLooper()).postDelayed({
-                checkMatchPair(context)
-                updateTextStepPair(binding)
-            }, delay)
+        when (firstPair) {
+            null -> firstPair = pairItem
+            else -> {
+                secondPair = pairItem
+                flippingPair = true
+                Handler(Looper.getMainLooper()).postDelayed({
+                    checkMatchPair(context)
+                    updateTextStepPair(binding)
+                }, delay)
+            }
         }
     }
 
