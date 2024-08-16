@@ -80,9 +80,8 @@ object ManagerFindPair {
 
         pairList.clear()
         for (i in 0 until selectedLevelPairGame.getNumPairs()) {
-            val imageRes = imageListPair[i]
-            pairList.add(Pairs(imageRes, pos = position++))
-            pairList.add(Pairs(imageRes, pos = position++))
+            pairList.add(Pairs(imageListPair[i], pos = position++))
+            pairList.add(Pairs(imageListPair[i], pos = position++))
         }
 
         if (selectedLevelPairGame in listOf("Easy", "Hard")) {
@@ -93,8 +92,15 @@ object ManagerFindPair {
         adapterPair.notifyDataSetChanged()
     }
 
-    private fun handlePairClick(pairItem: Pairs, position: Int, binding: ViewBinding, context: Context) {
-        if (flippingPair || pairItem.flipped || pairItem.matched) return
+    private fun handlePairClick(
+        pairItem: Pairs,
+        position: Int,
+        binding: ViewBinding,
+        context: Context
+    ) {
+        if (flippingPair || pairItem.flipped || pairItem.matched) {
+            return
+        }
 
         if (!gameStarted) {
             startTimer()
@@ -136,48 +142,68 @@ object ManagerFindPair {
     }
 
     private fun checkMatchPair(context: Context) {
-        val firstPos = firstPair?.pos ?: -1
-        val secondPos = secondPair?.pos ?: -1
+        firstPair?.let { first ->
+            secondPair?.let { second ->
+                val isMatch = first.image == second.image
+                handlePairResult(first, second, isMatch)
+                adapterPair.notifyItemChanged(first.pos)
+                adapterPair.notifyItemChanged(second.pos)
 
-        if (firstPair?.image == secondPair?.image) {
-            firstPair?.matched = true
-            secondPair?.matched = true
-        } else {
-            firstPair?.flipped = false
-            secondPair?.flipped = false
+                stepSearchPair++
+
+                if (checkGameOver()) {
+                    saveBestStatsFindGame()
+                    showWinToast(context)
+                }
+
+                resetPairSelection()
+            }
         }
-        stepSearchPair++
-        adapterPair.notifyItemChanged(firstPos)
-        adapterPair.notifyItemChanged(secondPos)
+    }
 
+    private fun handlePairResult(first: Pairs, second: Pairs, isMatch: Boolean) {
+        if (isMatch) {
+            first.matched = true
+            second.matched = true
+        } else {
+            first.flipped = false
+            second.flipped = false
+        }
+    }
+
+    private fun resetPairSelection() {
         firstPair = null
         secondPair = null
         flippingPair = false
-
-        if (checkGameOver()) {
-            saveBestStatsFindGame()
-            showWinToast(context)
-        }
     }
 
     @SuppressLint("NotifyDataSetChanged")
     fun resetFindPairGame(binding: ViewBinding) {
+        resetGameState()
+        resetPairs()
+        adapterPair.notifyDataSetChanged()
+        resetGameStats(binding)
+    }
+
+    private fun resetGameState() {
         firstPair = null
         secondPair = null
         flippingPair = false
+        gameStarted = false
+        stopTimer()
+    }
 
+    private fun resetPairs() {
         pairList.shuffle()
-
         pairList.forEach { pair ->
             pair.flipped = false
             pair.matched = false
         }
+    }
 
-        adapterPair.notifyDataSetChanged()
+    private fun resetGameStats(binding: ViewBinding) {
         stepSearchPair = 0
         updateTextStepPair(binding)
-        gameStarted = false
-        stopTimer()
     }
 
     private fun updateTextStepPair(binding: ViewBinding) {
