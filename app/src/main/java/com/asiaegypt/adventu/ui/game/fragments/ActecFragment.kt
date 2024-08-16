@@ -1,4 +1,4 @@
-package com.asiaegypt.adventu.ui.game
+package com.asiaegypt.adventu.ui.game.fragments
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -11,21 +11,24 @@ import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.asiaegypt.adventu.R
-import com.asiaegypt.adventu.databinding.FragmentAsianBinding
+import com.asiaegypt.adventu.databinding.FragmentActecBinding
+import com.asiaegypt.adventu.ui.game.managers.GameSettings
+import com.asiaegypt.adventu.ui.game.managers.ManagerFindPair
 import com.asiaegypt.adventu.ui.score.HighScoreActivity
 import com.asiaegypt.adventu.ui.settings.MusicManager
 import com.asiaegypt.adventu.ui.settings.MusicStart
 
-class AsianFragment : Fragment() {
-    private lateinit var binding: FragmentAsianBinding
+class ActecFragment : Fragment() {
+    private lateinit var binding: FragmentActecBinding
     private lateinit var preferences: SharedPreferences
     private lateinit var managerMusic: MusicManager
     private var choiceLevelPairGame: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = FragmentAsianBinding.inflate(layoutInflater, container, false)
+        binding = FragmentActecBinding.inflate(layoutInflater, container, false)
 
         managerMusic = context?.let { MusicManager(it) }!!
         preferences =
@@ -40,7 +43,7 @@ class AsianFragment : Fragment() {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        MusicStart.musicStartMode(R.raw.music_asian, managerMusic, preferences)
+        MusicStart.musicStartMode(R.raw.music_actec, managerMusic, preferences)
 
         choiceLevelPairGame = preferences.getString("levelFindPair", "").toString()
         binding.textLevel.text = "Level\n$choiceLevelPairGame"
@@ -53,8 +56,8 @@ class AsianFragment : Fragment() {
 
     private fun setBackground() {
         when (choiceLevelPairGame) {
-            "Medium" -> binding.backgroundAsian.setBackgroundResource(R.drawable.background_asian_medium)
-            "Hard" -> binding.backgroundAsian.setBackgroundResource(R.drawable.background_asian_hard)
+            "Medium" -> binding.backgroundActec.setBackgroundResource(R.drawable.background_actec_medium)
+            "Hard" -> binding.backgroundActec.setBackgroundResource(R.drawable.background_actec_hard)
         }
     }
 

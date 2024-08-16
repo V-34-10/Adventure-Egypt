@@ -8,6 +8,9 @@ import androidx.appcompat.app.AppCompatActivity
 import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivitySceneBinding
+import com.asiaegypt.adventu.ui.game.fragments.ActecFragment
+import com.asiaegypt.adventu.ui.game.fragments.AsianFragment
+import com.asiaegypt.adventu.ui.game.fragments.EgyptFragment
 import com.asiaegypt.adventu.ui.menu.MenuActivity
 
 class SceneActivity : AppCompatActivity() {

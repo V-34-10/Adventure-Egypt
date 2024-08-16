@@ -1,4 +1,4 @@
-package com.asiaegypt.adventu.ui.game
+package com.asiaegypt.adventu.ui.game.managers
 
 fun String.getSpanCount(): Int = when (this) {
     "Easy" -> 3

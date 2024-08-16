@@ -1,4 +1,4 @@
-package com.asiaegypt.adventu.ui.game
+package com.asiaegypt.adventu.ui.game.managers
 
 import android.content.Context
 import android.content.SharedPreferences

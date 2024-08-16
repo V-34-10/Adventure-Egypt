@@ -1,4 +1,4 @@
-package com.asiaegypt.adventu.ui.game
+package com.asiaegypt.adventu.ui.game.fragments
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -12,6 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.FragmentEgyptBinding
+import com.asiaegypt.adventu.ui.game.managers.GameSettings
+import com.asiaegypt.adventu.ui.game.managers.ManagerFindPair
 import com.asiaegypt.adventu.ui.score.HighScoreActivity
 import com.asiaegypt.adventu.ui.settings.MusicManager
 import com.asiaegypt.adventu.ui.settings.MusicStart
