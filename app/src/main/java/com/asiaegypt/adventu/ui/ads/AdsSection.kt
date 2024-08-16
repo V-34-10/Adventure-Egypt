@@ -25,53 +25,56 @@ class AdsSection(
     private val activity: Activity,
     private val binding: ActivityMainBinding
 ) : AdsService {
-    private var linkAds: String =
-        "https://on.kabushinoko.com/interstitial"
-    private lateinit var cookiesAds: String
-    private lateinit var userAgentAds: String
+
+    private var linkAds: String = "https://on.kabushinoko.com/interstitial"
     private var preferences: SharedPreferences =
         activity.getSharedPreferences("AsianEgyptAdventurePref", Context.MODE_PRIVATE)
+
+    private lateinit var cookiesAds: String
+    private lateinit var userAgentAds: String
+
     private var callAds: Call? = null
     private var isTimeOverResponse = false
     private var latchTime = CountDownLatch(1)
     override fun fetchAndLoadAds() {
-        val client = OkHttpClient.Builder()
-            .callTimeout(10, TimeUnit.SECONDS)
-            .build()
-        val request = Request.Builder()
-            .url(linkAds)
-            .build()
-
+        val client = createClient()
+        val request = createRequest(linkAds)
         callAds = client.newCall(request)
         callAds?.enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                if (call.isCanceled()) {
-                    Log.i("AdsSection", "onFailure: Call was cancelled")
-                } else {
-                    e.printStackTrace()
-                }
-                latchTime.countDown()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if (call.isCanceled()) {
-                    Log.i("AdsSection", "onResponse: Call was cancelled")
-                }
-                response.use {
-                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-                    cookiesAds = response.header("Set-Cookie") ?: ""
-                    userAgentAds = response.header("User-Agent") ?: ""
-
-                    val json = response.body?.string()
-                    json?.let {
-                        parseJsonAndLoadImage(it, cookiesAds, userAgentAds)
-                    }
-                }
-                latchTime.countDown()
-            }
+            override fun onFailure(call: Call, e: IOException) = handleFailure(call, e)
+            override fun onResponse(call: Call, response: Response) = handleResponse(call, response)
         })
         checkTimeOut()
+    }
+
+    private fun createClient(): OkHttpClient =
+        OkHttpClient.Builder().callTimeout(10, TimeUnit.SECONDS).build()
+
+    private fun createRequest(url: String): Request = Request.Builder().url(url).build()
+
+    private fun handleFailure(call: Call, e: IOException) {
+        if (call.isCanceled()) {
+            Log.i("AdsSection", "Call was cancelled")
+        } else {
+            e.printStackTrace()
+        }
+        latchTime.countDown()
+    }
+
+    private fun handleResponse(call: Call, response: Response) {
+        if (call.isCanceled()) {
+            Log.i("AdsSection", "Call was cancelled")
+        } else {
+            response.use {
+                if (!response.isSuccessful) throw IOException("Unexpected code $response")
+                cookiesAds = response.header("Set-Cookie") ?: ""
+                userAgentAds = response.header("User-Agent") ?: ""
+                response.body?.string()?.let { json ->
+                    parseJsonAndLoadImage(json, cookiesAds, userAgentAds)
+                }
+            }
+        }
+        latchTime.countDown()
     }
 
     private fun checkTimeOut() {
@@ -90,9 +93,7 @@ class AdsSection(
     }
 
     override fun cancel() {
-        if (callAds?.isCanceled() == false) {
-            callAds?.cancel()
-        }
+        if (callAds?.isCanceled() == false) callAds?.cancel()
     }
 
     private fun parseJsonAndLoadImage(json: String, cookies: String?, userAgent: String?) {
@@ -102,7 +103,6 @@ class AdsSection(
             val sourceUrl = jsonObject.getString("source")
 
             saveAdsData(actionUrl, sourceUrl, cookies, userAgent)
-
             loadImageAds(sourceUrl, actionUrl, cookies, userAgent)
         } catch (e: JSONException) {
             e.printStackTrace()
@@ -115,12 +115,13 @@ class AdsSection(
         cookies: String?,
         userAgent: String?
     ) {
-        val editor = preferences.edit()
-        editor.putString("actionUrl", actionUrl)
-        editor.putString("sourceUrl", sourceUrl)
-        editor.putString("cookies", cookies)
-        editor.putString("userAgent", userAgent)
-        editor.apply()
+        preferences.edit().apply {
+            putString("actionUrl", actionUrl)
+            putString("sourceUrl", sourceUrl)
+            putString("cookies", cookies)
+            putString("userAgent", userAgent)
+            apply()
+        }
     }
 
     override fun loadImageAds(
@@ -129,50 +130,35 @@ class AdsSection(
         cookies: String?,
         userAgent: String?
     ) {
-        val client = OkHttpClient.Builder()
-            .callTimeout(10, TimeUnit.SECONDS)
-            .build()
-        val request = Request.Builder()
-            .url(imageUrl)
+        val client = createClient()
+        val request = createRequest(imageUrl)
+            .newBuilder()
             .header("Cookie", cookies.toString())
             .header("User-Agent", userAgent.toString())
             .build()
-
         callAds = client.newCall(request)
         callAds?.enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                e.printStackTrace()
-                latchTime.countDown()
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                response.use {
-                    if (!response.isSuccessful) throw IOException("Unexpected code $response")
-
-                    val inputStream = response.body?.byteStream()
-                    val bitmap = BitmapFactory.decodeStream(inputStream)
-
-                    activity.runOnUiThread {
-                        if (!isTimeOverResponse) {
-
-                            binding.resBanner.visibility = View.VISIBLE
-                            binding.resBanner.setImageBitmap(bitmap)
-
-                            binding.resBanner.setOnClickListener {
-                                activity.startActivity(
-                                    Intent(
-                                        Intent.ACTION_VIEW,
-                                        Uri.parse(actionUrl)
-                                    )
-                                )
-                            }
-                        }
-                    }
-
-                }
-                latchTime.countDown()
-            }
+            override fun onFailure(call: Call, e: IOException) = handleFailure(call, e)
+            override fun onResponse(call: Call, response: Response) =
+                handleImageResponse(response, actionUrl)
         })
         checkTimeOut()
+    }
+
+    private fun handleImageResponse(response: Response, actionUrl: String) {
+        response.use {
+            if (!response.isSuccessful) throw IOException("Unexpected code $response")
+            val bitmap = response.body?.byteStream()?.let { BitmapFactory.decodeStream(it) }
+            activity.runOnUiThread {
+                if (!isTimeOverResponse && bitmap != null) {
+                    binding.resBanner.visibility = View.VISIBLE
+                    binding.resBanner.setImageBitmap(bitmap)
+                    binding.resBanner.setOnClickListener {
+                        activity.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(actionUrl)))
+                    }
+                }
+            }
+        }
+        latchTime.countDown()
     }
 }
