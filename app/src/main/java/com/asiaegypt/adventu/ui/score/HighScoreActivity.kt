@@ -1,34 +1,28 @@
 package com.asiaegypt.adventu.ui.score
 
 import android.annotation.SuppressLint
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
-import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityHighScoreBinding
+import com.asiaegypt.adventu.ui.ActivityInitializer
 import com.asiaegypt.adventu.ui.score.ScoreManager.loadStatsScoreFindPairGame
-import com.asiaegypt.adventu.ui.settings.MusicManager
-import com.asiaegypt.adventu.ui.settings.MusicStart
 
 class HighScoreActivity : AppCompatActivity() {
     private val binding by lazy { ActivityHighScoreBinding.inflate(layoutInflater) }
-    private lateinit var preferences: SharedPreferences
-    private lateinit var managerMusic: MusicManager
+    private lateinit var initializer: ActivityInitializer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        NavigationManager.handleNavigationBarVisibility(this)
-        managerMusic = MusicManager(this)
-        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
-        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+        initializer = ActivityInitializer(this)
+        initializer.initialize()
         initScoreFindPairGame()
     }
 
     @SuppressLint("SetTextI18n")
     private fun initScoreFindPairGame() {
-        loadStatsScoreFindPairGame(preferences)
+        loadStatsScoreFindPairGame(initializer.preferences)
 
         val stats = ScoreManager.stats
 
@@ -64,21 +58,21 @@ class HighScoreActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        managerMusic.resume()
+        initializer.managerMusic.resume()
     }
 
     override fun onPause() {
         super.onPause()
-        managerMusic.pause()
+        initializer.managerMusic.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 }

@@ -1,30 +1,25 @@
 package com.asiaegypt.adventu.ui.settings
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.media.AudioManager
 import android.os.Bundle
-import android.view.View
 import android.view.animation.AnimationUtils
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
-import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivitySettingsBinding
+import com.asiaegypt.adventu.ui.ActivityInitializer
 
 class SettingsActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySettingsBinding.inflate(layoutInflater) }
     private val managerAudioService by lazy { getSystemService(Context.AUDIO_SERVICE) as AudioManager }
     private var defaultVolumeMusic: Int = 50
-    private lateinit var preferences: SharedPreferences
-    private lateinit var managerMusic: MusicManager
+    private lateinit var initializer: ActivityInitializer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        NavigationManager.handleNavigationBarVisibility(this)
-        managerMusic = MusicManager(this)
-        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
-        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+        initializer = ActivityInitializer(this)
+        initializer.initialize()
 
         initMusicSettings()
         initVolumeControl()
@@ -32,7 +27,7 @@ class SettingsActivity : AppCompatActivity() {
     }
 
     private fun initMusicSettings() {
-        val isMusicOn = preferences.getBoolean("music_status", false)
+        val isMusicOn = initializer.preferences.getBoolean("music_status", false)
         updateMusicButtonState(isMusicOn)
     }
 
@@ -59,8 +54,8 @@ class SettingsActivity : AppCompatActivity() {
             it.startAnimation(animationButton)
             updateMusicButtonState(true)
             managerAudioService.setStreamVolume(AudioManager.STREAM_MUSIC, defaultVolumeMusic, 0)
-            preferences.edit().putBoolean("music_status", true).apply()
-            MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+            initializer.preferences.edit().putBoolean("music_status", true).apply()
+            MusicStart.musicStartMode(R.raw.music_menu, initializer.managerMusic, initializer.preferences)
         }
 
         binding.buttonOff.setOnClickListener {
@@ -68,8 +63,8 @@ class SettingsActivity : AppCompatActivity() {
             updateMusicButtonState(false)
             defaultVolumeMusic = managerAudioService.getStreamVolume(AudioManager.STREAM_MUSIC)
             managerAudioService.setStreamVolume(AudioManager.STREAM_MUSIC, 0, 0)
-            preferences.edit().putBoolean("music_status", false).apply()
-            MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+            initializer.preferences.edit().putBoolean("music_status", false).apply()
+            MusicStart.musicStartMode(R.raw.music_menu, initializer.managerMusic, initializer.preferences)
         }
 
         binding.buttonContinue.setOnClickListener {
@@ -85,17 +80,17 @@ class SettingsActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 
     override fun onResume() {
         super.onResume()
-        managerMusic.resume()
+        initializer.managerMusic.resume()
     }
 
     override fun onPause() {
         super.onPause()
-        managerMusic.pause()
+        initializer.managerMusic.pause()
     }
 
     @Deprecated(
@@ -104,6 +99,6 @@ class SettingsActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         super.onBackPressed()
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 }
