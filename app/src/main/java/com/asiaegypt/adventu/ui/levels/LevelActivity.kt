@@ -1,35 +1,26 @@
 package com.asiaegypt.adventu.ui.levels
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityLevelBinding
+import com.asiaegypt.adventu.ui.ActivityInitializer
 import com.asiaegypt.adventu.ui.game.SceneActivity
-import com.asiaegypt.adventu.ui.settings.MusicManager
 import com.asiaegypt.adventu.ui.settings.MusicStart
 
 class LevelActivity : AppCompatActivity() {
     private val binding by lazy { ActivityLevelBinding.inflate(layoutInflater) }
-    private lateinit var preferences: SharedPreferences
-    private lateinit var managerMusic: MusicManager
+    private lateinit var initializer: ActivityInitializer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        initializeComponents()
+        initializer = ActivityInitializer(this)
+        initializer.initialize()
         setupButtons()
-    }
-
-    private fun initializeComponents() {
-        NavigationManager.handleNavigationBarVisibility(this)
-        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
-        managerMusic = MusicManager(this)
-        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
     }
 
     private fun setupButtons() {
@@ -50,9 +41,9 @@ class LevelActivity : AppCompatActivity() {
 
     private fun handleButtonClick(view: View, levelResId: Int, animation: Animation) {
         view.startAnimation(animation)
-        preferences.edit().putString("levelFindPair", getString(levelResId)).apply()
+        initializer.preferences.edit().putString("levelFindPair", getString(levelResId)).apply()
         startActivity(Intent(this, SceneActivity::class.java))
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 
     @Deprecated(
@@ -61,24 +52,24 @@ class LevelActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         super.onBackPressed()
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 
     override fun onResume() {
         super.onResume()
-        managerMusic.resume()
-        if (!managerMusic.checkPlaying()) {
-            MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+        initializer.managerMusic.resume()
+        if (!initializer.managerMusic.checkPlaying()) {
+            MusicStart.musicStartMode(R.raw.music_menu, initializer.managerMusic, initializer.preferences)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        managerMusic.pause()
+        initializer.managerMusic.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 }

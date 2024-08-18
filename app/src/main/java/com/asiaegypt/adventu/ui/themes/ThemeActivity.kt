@@ -1,35 +1,26 @@
 package com.asiaegypt.adventu.ui.themes
 
 import android.content.Intent
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
-import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.ActivityThemeBinding
+import com.asiaegypt.adventu.ui.ActivityInitializer
 import com.asiaegypt.adventu.ui.levels.LevelActivity
-import com.asiaegypt.adventu.ui.settings.MusicManager
 import com.asiaegypt.adventu.ui.settings.MusicStart
 
 class ThemeActivity : AppCompatActivity() {
     private val binding by lazy { ActivityThemeBinding.inflate(layoutInflater) }
-    private lateinit var preferences: SharedPreferences
-    private lateinit var managerMusic: MusicManager
+    private lateinit var initializer: ActivityInitializer
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        initializeComponents()
+        initializer = ActivityInitializer(this)
+        initializer.initialize()
         setupThemeButtons()
-    }
-
-    private fun initializeComponents() {
-        NavigationManager.handleNavigationBarVisibility(this)
-        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
-        managerMusic = MusicManager(this)
-        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
     }
 
     private fun setupThemeButtons() {
@@ -47,9 +38,9 @@ class ThemeActivity : AppCompatActivity() {
 
     private fun onThemeButtonClicked(view: View, animation: Animation, themeResId: Int) {
         view.startAnimation(animation)
-        preferences.edit().putString("themeFindPair", getString(themeResId)).apply()
+        initializer.preferences.edit().putString("themeFindPair", getString(themeResId)).apply()
         startActivity(Intent(this, LevelActivity::class.java))
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 
     @Deprecated(
@@ -58,24 +49,24 @@ class ThemeActivity : AppCompatActivity() {
     )
     override fun onBackPressed() {
         super.onBackPressed()
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 
     override fun onResume() {
         super.onResume()
-        managerMusic.resume()
-        if (!managerMusic.checkPlaying()) {
-            MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+        initializer.managerMusic.resume()
+        if (!initializer.managerMusic.checkPlaying()) {
+            MusicStart.musicStartMode(R.raw.music_menu, initializer.managerMusic, initializer.preferences)
         }
     }
 
     override fun onPause() {
         super.onPause()
-        managerMusic.pause()
+        initializer.managerMusic.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        managerMusic.release()
+        initializer.managerMusic.release()
     }
 }
