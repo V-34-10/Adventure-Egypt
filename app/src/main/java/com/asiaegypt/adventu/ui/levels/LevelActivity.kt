@@ -3,6 +3,8 @@ package com.asiaegypt.adventu.ui.levels
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.asiaegypt.adventu.NavigationManager
@@ -19,39 +21,38 @@ class LevelActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        NavigationManager.handleNavigationBarVisibility(this)
-        managerMusic = MusicManager(this)
-        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
-        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
-        choiceLevelGameButton()
+        initializeComponents()
+        setupButtons()
     }
 
-    private fun choiceLevelGameButton() {
-        var animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
+    private fun initializeComponents() {
+        NavigationManager.handleNavigationBarVisibility(this)
+        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
+        managerMusic = MusicManager(this)
+        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+    }
 
-        binding.buttonLevelEasy.setOnClickListener {
-            it.startAnimation(animationButton)
-            preferences.edit().putString("levelFindPair", getString(R.string.button_level_easy))
-                .apply()
-            startActivity(Intent(this@LevelActivity, SceneActivity::class.java))
-            managerMusic.release()
+    private fun setupButtons() {
+        val buttons = listOf(
+            binding.buttonLevelEasy to R.string.button_level_easy,
+            binding.buttonLevelMedium to R.string.button_level_medium,
+            binding.buttonLevelHard to R.string.button_level_hard
+        )
+
+        val animation = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
+
+        buttons.forEach { (button, levelResId) ->
+            button.setOnClickListener { view ->
+                handleButtonClick(view, levelResId, animation)
+            }
         }
-        binding.buttonLevelMedium.setOnClickListener {
-            animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-            it.startAnimation(animationButton)
-            preferences.edit().putString("levelFindPair", getString(R.string.button_level_medium))
-                .apply()
-            startActivity(Intent(this@LevelActivity, SceneActivity::class.java))
-            managerMusic.release()
-        }
-        binding.buttonLevelHard.setOnClickListener {
-            animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-            it.startAnimation(animationButton)
-            preferences.edit().putString("levelFindPair", getString(R.string.button_level_hard))
-                .apply()
-            startActivity(Intent(this@LevelActivity, SceneActivity::class.java))
-            managerMusic.release()
-        }
+    }
+
+    private fun handleButtonClick(view: View, levelResId: Int, animation: Animation) {
+        view.startAnimation(animation)
+        preferences.edit().putString("levelFindPair", getString(levelResId)).apply()
+        startActivity(Intent(this, SceneActivity::class.java))
+        managerMusic.release()
     }
 
     @Deprecated(
