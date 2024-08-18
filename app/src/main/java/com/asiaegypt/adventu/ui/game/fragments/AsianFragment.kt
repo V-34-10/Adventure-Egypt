@@ -20,22 +20,19 @@ import com.asiaegypt.adventu.ui.settings.MusicStart
 
 class AsianFragment : Fragment() {
     private lateinit var binding: FragmentAsianBinding
-    private lateinit var preferences: SharedPreferences
-    private lateinit var managerMusic: MusicManager
+    private val preferences: SharedPreferences by lazy {
+        requireActivity().getSharedPreferences(
+            "AsianEgyptAdventurePref",
+            AppCompatActivity.MODE_PRIVATE
+        )
+    }
+    private val managerMusic: MusicManager by lazy { MusicManager(requireContext()) }
     private var choiceLevelPairGame: String = ""
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentAsianBinding.inflate(layoutInflater, container, false)
-
-        managerMusic = context?.let { MusicManager(it) }!!
-        preferences =
-            requireActivity().getSharedPreferences(
-                "AsianEgyptAdventurePref",
-                AppCompatActivity.MODE_PRIVATE
-            )
-
         return binding.root
     }
 

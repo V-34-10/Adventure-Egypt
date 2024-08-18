@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.asiaegypt.adventu.NavigationManager
 import com.asiaegypt.adventu.R
 import com.asiaegypt.adventu.databinding.FragmentActecBinding
 import com.asiaegypt.adventu.ui.game.managers.GameSettings
@@ -20,8 +21,15 @@ import com.asiaegypt.adventu.ui.settings.MusicStart
 
 class ActecFragment : Fragment() {
     private lateinit var binding: FragmentActecBinding
-    private lateinit var preferences: SharedPreferences
-    private lateinit var managerMusic: MusicManager
+    private val preferences: SharedPreferences by lazy {
+        requireActivity().getSharedPreferences(
+            "AsianEgyptAdventurePref",
+            AppCompatActivity.MODE_PRIVATE
+        )
+    }
+    private val managerMusic: MusicManager by lazy {
+        MusicManager(requireContext())
+    }
     private var choiceLevelPairGame: String = ""
 
     override fun onCreateView(
@@ -29,14 +37,6 @@ class ActecFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentActecBinding.inflate(layoutInflater, container, false)
-
-        managerMusic = context?.let { MusicManager(it) }!!
-        preferences =
-            requireActivity().getSharedPreferences(
-                "AsianEgyptAdventurePref",
-                AppCompatActivity.MODE_PRIVATE
-            )
-
         return binding.root
     }
 
