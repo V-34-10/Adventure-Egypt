@@ -3,6 +3,8 @@ package com.asiaegypt.adventu.ui.themes
 import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
+import android.view.View
+import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import com.asiaegypt.adventu.NavigationManager
@@ -19,39 +21,35 @@ class ThemeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
-        NavigationManager.handleNavigationBarVisibility(this)
-        managerMusic = MusicManager(this)
-        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
-        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
-        choiceThemeGameButton()
+        initializeComponents()
+        setupThemeButtons()
     }
 
-    private fun choiceThemeGameButton() {
-        var animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
+    private fun initializeComponents() {
+        NavigationManager.handleNavigationBarVisibility(this)
+        preferences = getSharedPreferences("AsianEgyptAdventurePref", MODE_PRIVATE)
+        managerMusic = MusicManager(this)
+        MusicStart.musicStartMode(R.raw.music_menu, managerMusic, preferences)
+    }
 
-        binding.buttonThemeFirst.setOnClickListener {
-            it.startAnimation(animationButton)
-            preferences.edit().putString("themeFindPair", getString(R.string.button_theme_first))
-                .apply()
-            startActivity(Intent(this@ThemeActivity, LevelActivity::class.java))
-            managerMusic.release()
+    private fun setupThemeButtons() {
+        val themeButtons = listOf(
+            binding.buttonThemeFirst to R.string.button_theme_first,
+            binding.buttonThemeSecond to R.string.button_theme_second,
+            binding.buttonThemeThree to R.string.button_theme_three
+        )
+        themeButtons.forEach { (button, themeResId) ->
+            button.setOnClickListener { view ->
+                onThemeButtonClicked(view, AnimationUtils.loadAnimation(this, R.anim.scale_animation), themeResId)
+            }
         }
-        binding.buttonThemeSecond.setOnClickListener {
-            animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-            it.startAnimation(animationButton)
-            preferences.edit().putString("themeFindPair", getString(R.string.button_theme_second))
-                .apply()
-            startActivity(Intent(this@ThemeActivity, LevelActivity::class.java))
-            managerMusic.release()
-        }
-        binding.buttonThemeThree.setOnClickListener {
-            animationButton = AnimationUtils.loadAnimation(this, R.anim.scale_animation)
-            it.startAnimation(animationButton)
-            preferences.edit().putString("themeFindPair", getString(R.string.button_theme_three))
-                .apply()
-            startActivity(Intent(this@ThemeActivity, LevelActivity::class.java))
-            managerMusic.release()
-        }
+    }
+
+    private fun onThemeButtonClicked(view: View, animation: Animation, themeResId: Int) {
+        view.startAnimation(animation)
+        preferences.edit().putString("themeFindPair", getString(themeResId)).apply()
+        startActivity(Intent(this, LevelActivity::class.java))
+        managerMusic.release()
     }
 
     @Deprecated(
