@@ -51,10 +51,13 @@ dependencies {
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
 
-    // Glide
-    implementation("com.github.bumptech.glide:glide:4.14.2")
-    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
-    // Okhttp3
-    implementation("com.squareup.okhttp3:okhttp:4.9.1")
-    implementation("com.github.bumptech.glide:okhttp3-integration:4.12.0")
+    implementation("com.appodeal.ads:sdk:3.3.2.0") {
+        exclude(group = "com.appodeal.ads.sdk.networks", module = "yandex")
+        exclude(group = "com.appodeal.ads.sdk.services", module = "adjust")
+        exclude(group = "com.appodeal.ads.sdk.services", module = "appsflyer")
+        exclude(group = "com.appodeal.ads.sdk.services", module = "facebook_analytics")
+        exclude(group = "com.appodeal.ads.sdk.services", module = "firebase")
+        exclude(group = "com.applovin.mediation", module = "yandex-adapter")
+    }
+    implementation("com.bigossp:max-mediation:4.8.2.0")
 }
