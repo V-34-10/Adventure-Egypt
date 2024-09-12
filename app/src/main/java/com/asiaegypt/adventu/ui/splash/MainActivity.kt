@@ -4,14 +4,14 @@ import android.animation.ValueAnimator
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.asiaegypt.adventu.NavigationManager
+import com.asiaegypt.adventu.NetworkManager
 import com.asiaegypt.adventu.databinding.ActivityMainBinding
 import com.asiaegypt.adventu.ui.ads.AdsSection.loadAds
 import com.asiaegypt.adventu.ui.menu.MenuActivity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity() {
     private val binding by lazy { ActivityMainBinding.inflate(layoutInflater) }
@@ -20,19 +20,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         NavigationManager.handleNavigationBarVisibility(this)
 
-        CoroutineScope(Dispatchers.Main).launch {
-            loadingApp()
-        }
-    }
-
-    private suspend fun loadingApp() {
-        withContext(Dispatchers.IO) {
-            try {
-                loadAds(this@MainActivity)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                startToMenu()
-            }
+        if (NetworkManager.checkInternet(this)) {
+            loadAds(this)
+        } else {
+            startToMenuWithAnimation()
         }
     }
 
@@ -54,8 +45,15 @@ class MainActivity : AppCompatActivity() {
         animation.start()
     }
 
-    fun startToMenu() {
+    fun startToMenuWithAnimation() {
         animationLoading(3000L)
+        lifecycleScope.launch {
+            delay(3000L)
+            startToMenu()
+        }
+    }
+
+    fun startToMenu() {
         startActivity(Intent(this@MainActivity, MenuActivity::class.java))
         finish()
     }

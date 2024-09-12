@@ -16,7 +16,7 @@ object AdsSection {
             }
 
             override fun onInterstitialFailedToLoad() {
-                (activity as MainActivity).startToMenu()
+                (activity as MainActivity).startToMenuWithAnimation()
             }
 
             override fun onInterstitialShown() {
@@ -24,7 +24,7 @@ object AdsSection {
             }
 
             override fun onInterstitialShowFailed() {
-                (activity as MainActivity).startToMenu()
+                (activity as MainActivity).startToMenuWithAnimation()
             }
 
             override fun onInterstitialClosed() {
