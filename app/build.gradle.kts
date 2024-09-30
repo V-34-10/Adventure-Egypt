@@ -60,4 +60,14 @@ dependencies {
         exclude(group = "com.applovin.mediation", module = "yandex-adapter")
     }
     implementation("com.bigossp:max-mediation:4.8.2.0")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.14.2")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    // Okhttp3
+    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("com.github.bumptech.glide:okhttp3-integration:4.12.0")
+    // JSON
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1")
+    implementation("com.google.code.gson:gson:2.10.1")
 }
