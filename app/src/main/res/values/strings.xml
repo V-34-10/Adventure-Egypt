@@ -40,5 +40,8 @@
     <string name="default_win">WIN\n10000</string>
     <string name="pair_image">pair image</string>
     <string name="toast_win">Congratulations, you won!</string>
+    <string name="background_game">background_game</string>
+    <string name="image_game">image_game</string>
+    <string name="start">start_game</string>
 
 </resources>
