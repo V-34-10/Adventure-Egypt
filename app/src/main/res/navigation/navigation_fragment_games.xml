@@ -7,19 +7,19 @@
 
     <fragment
         android:id="@+id/matchmaking_actec_game"
-        android:name="com.asiaegypt.adventu.ui.game.fragments.ActecFragment"
+        android:name="com.asiaegypt.advente.ui.game.fragments.ActecFragment"
         android:label="@string/button_theme_first"
         tools:layout="@layout/fragment_actec" />
 
     <fragment
         android:id="@+id/matchmaking_egypt_game"
-        android:name="com.asiaegypt.adventu.ui.game.fragments.EgyptFragment"
+        android:name="com.asiaegypt.advente.ui.game.fragments.EgyptFragment"
         android:label="@string/button_theme_second"
         tools:layout="@layout/fragment_egypt" />
 
     <fragment
         android:id="@+id/matchmaking_asian_game"
-        android:name="com.asiaegypt.adventu.ui.game.fragments.AsianFragment"
+        android:name="com.asiaegypt.advente.ui.game.fragments.AsianFragment"
         android:label="@string/button_theme_three"
         tools:layout="@layout/fragment_asian" />
 

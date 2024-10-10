@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.asiaegypt.adventu"
+    namespace = "com.asiaegypt.advente"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.asiaegypt.adventu"
+        applicationId = "com.asiaegypt.advente"
         minSdk = 24
         targetSdk = 34
         versionCode = 1
