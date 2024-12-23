@@ -1,6 +1,7 @@
 package com.asiaegypt.advente.ui.menu
 
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.asiaegypt.advente.NavigationManager
 import com.asiaegypt.advente.R
 import com.asiaegypt.advente.databinding.ActivityMenuBinding
 import com.asiaegypt.advente.ui.ActivityInitializer
@@ -27,6 +29,7 @@ class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(binding.root)
+        NavigationManager.handleNavigationBarVisibility(this)
         initializer = ActivityInitializer(this)
         initializer.initialize()
         checkOfferWallStatus()
@@ -56,6 +59,9 @@ class MenuActivity : AppCompatActivity() {
     }
 
     private fun showGamesScreen(games: List<Game>) {
+        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
+        binding.backgroundMain.setBackgroundResource(R.drawable.background_loading_portrait)
+        binding.titleOffers.visibility = View.VISIBLE
         binding.listGames.visibility = View.VISIBLE
         binding.listGames.layoutManager = LinearLayoutManager(this)
         adapter = GameAdapter(this::onGameClick)

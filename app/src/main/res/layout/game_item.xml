@@ -6,27 +6,35 @@
     android:layout_height="150dp"
     android:layout_margin="@dimen/dp20">
 
-    <ImageView
-        android:id="@+id/background_game"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_block_game"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:clickable="true"
-        android:contentDescription="@string/background_game"
         android:focusable="true"
-        android:scaleType="centerCrop"
+        app:cardCornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/background_asian" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/background_game"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/background_game"
+            android:scaleType="centerCrop"
+            android:src="@drawable/bg_0" />
+
+    </com.google.android.material.card.MaterialCardView>
 
     <ImageView
         android:id="@+id/image_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="30dp"
         android:clickable="true"
-        android:contentDescription="@string/image_game"
+        android:contentDescription="@string/app_name"
         android:focusable="true"
         android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -35,14 +43,20 @@
         app:srcCompat="@drawable/fg_0"
         tools:ignore="ImageContrastCheck" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/start_game"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="10dp"
-        android:layout_marginBottom="10dp"
+        android:layout_marginEnd="30dp"
+        android:backgroundTint="@color/blue"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="@string/start"
+        app:cornerRadius="12dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
