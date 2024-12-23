@@ -13,6 +13,7 @@ import com.asiaegypt.advente.R
 import com.asiaegypt.advente.databinding.ActivityThemeBinding
 import com.asiaegypt.advente.ui.ActivityInitializer
 import com.asiaegypt.advente.ui.levels.LevelActivity
+import com.asiaegypt.advente.ui.menu.MenuActivity
 import com.asiaegypt.advente.ui.settings.MusicStart
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -98,6 +99,8 @@ class ThemeActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         initializer.managerMusic.release()
+        startActivity(Intent(this, MenuActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+        finish()
     }
 
     override fun onResume() {
