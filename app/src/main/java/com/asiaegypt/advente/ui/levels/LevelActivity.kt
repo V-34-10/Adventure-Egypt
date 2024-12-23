@@ -11,6 +11,7 @@ import com.asiaegypt.advente.databinding.ActivityLevelBinding
 import com.asiaegypt.advente.ui.ActivityInitializer
 import com.asiaegypt.advente.ui.game.SceneActivity
 import com.asiaegypt.advente.ui.settings.MusicStart
+import com.asiaegypt.advente.ui.themes.ThemeActivity
 
 class LevelActivity : AppCompatActivity() {
     private val binding by lazy { ActivityLevelBinding.inflate(layoutInflater) }
@@ -53,6 +54,8 @@ class LevelActivity : AppCompatActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         initializer.managerMusic.release()
+        startActivity(Intent(this, ThemeActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+        finish()
     }
 
     override fun onResume() {

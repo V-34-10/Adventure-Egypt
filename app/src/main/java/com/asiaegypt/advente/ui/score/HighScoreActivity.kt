@@ -1,12 +1,14 @@
 package com.asiaegypt.advente.ui.score
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.asiaegypt.advente.R
 import com.asiaegypt.advente.databinding.ActivityHighScoreBinding
 import com.asiaegypt.advente.ui.ActivityInitializer
+import com.asiaegypt.advente.ui.game.SceneActivity
 import com.asiaegypt.advente.ui.score.ScoreManager.loadStatsScoreFindPairGame
 
 class HighScoreActivity : AppCompatActivity() {
@@ -50,6 +52,7 @@ class HighScoreActivity : AppCompatActivity() {
         textView.text = getString(stringResId) + formattedTime
     }
 
+    @SuppressLint("DefaultLocale")
     private fun formatTime(timeInMillis: Long): String {
         val minutes = (timeInMillis / 1000) / 60
         val seconds = (timeInMillis / 1000) % 60
@@ -71,8 +74,11 @@ class HighScoreActivity : AppCompatActivity() {
         initializer.managerMusic.release()
     }
 
+    @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
         initializer.managerMusic.release()
+        startActivity(Intent(this, SceneActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+        finish()
     }
 }

@@ -13,7 +13,8 @@ import com.asiaegypt.advente.databinding.ActivitySceneBinding
 import com.asiaegypt.advente.ui.game.fragments.ActecFragment
 import com.asiaegypt.advente.ui.game.fragments.AsianFragment
 import com.asiaegypt.advente.ui.game.fragments.EgyptFragment
-import com.asiaegypt.advente.ui.menu.MenuActivity
+import com.asiaegypt.advente.ui.game.managers.ManagerFindPair
+import com.asiaegypt.advente.ui.levels.LevelActivity
 
 class SceneActivity : AppCompatActivity() {
     private val binding by lazy { ActivitySceneBinding.inflate(layoutInflater) }
@@ -47,8 +48,9 @@ class SceneActivity : AppCompatActivity() {
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         super.onBackPressed()
+        ManagerFindPair.resetFindPairGame(binding)
         if (!handleBackStack()) {
-            navigateToMenuActivity()
+            navigateToLevelActivity()
         }
     }
 
@@ -61,9 +63,9 @@ class SceneActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateToMenuActivity() {
+    private fun navigateToLevelActivity() {
         requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        startActivity(Intent(this, MenuActivity::class.java))
+        startActivity(Intent(this, LevelActivity::class.java).setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
         finish()
     }
 }
