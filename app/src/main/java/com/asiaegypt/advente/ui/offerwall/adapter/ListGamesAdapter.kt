@@ -43,5 +43,7 @@ class GameViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         Glide.with(itemView.context).load(game.auxImage).into(foreImage)
         button.text = game.activateText
         button.setOnClickListener { onGameClick(game) }
+        backImage.setOnClickListener { onGameClick(game) }
+        foreImage.setOnClickListener { onGameClick(game) }
     }
 }
