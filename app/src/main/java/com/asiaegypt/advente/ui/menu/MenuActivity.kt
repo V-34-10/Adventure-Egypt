@@ -8,12 +8,9 @@ import android.view.View
 import android.view.animation.AnimationUtils
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.asiaegypt.advente.NetworkManager
 import com.asiaegypt.advente.R
 import com.asiaegypt.advente.databinding.ActivityMenuBinding
 import com.asiaegypt.advente.ui.ActivityInitializer
-import com.asiaegypt.advente.ui.ads.AdsSection
-import com.asiaegypt.advente.ui.ads.AdsSection.loadAds
 import com.asiaegypt.advente.ui.levels.LevelActivity
 import com.asiaegypt.advente.ui.offerwall.adapter.GameAdapter
 import com.asiaegypt.advente.ui.offerwall.model.Game
@@ -33,9 +30,6 @@ class MenuActivity : AppCompatActivity() {
         initializer = ActivityInitializer(this)
         initializer.initialize()
         checkOfferWallStatus()
-        if (NetworkManager.checkInternet(this)) {
-            loadAds(this)
-        }
         choiceMenuAppButton()
     }
 
@@ -150,7 +144,6 @@ class MenuActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        AdsSection.interstitialShowed = false
         initializer.managerMusic.release()
     }
 
